@@ -1,0 +1,6 @@
+myenv
+data
+inw.py
+__pycache__/
+.env
+cache

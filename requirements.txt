@@ -1,0 +1,10 @@
+fastapi[standard]
+py-mon
+requests
+python-dotenv
+unidecode
+pydantic
+inflection
+pymongo
+invoke
+vnstock3
