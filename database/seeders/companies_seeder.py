@@ -22,5 +22,5 @@ def main():
         print(e)
 
 
-if __name__ == "__main__" or "tasks":
+if __name__ == "__main__" or __name__ == "tasks":
     main()

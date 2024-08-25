@@ -1,9 +1,10 @@
 fastapi[standard]
 py-mon
+pydantic
+pydantic-mongo
 requests
 python-dotenv
 unidecode
-pydantic
 inflection
 pymongo
 invoke

@@ -4,6 +4,7 @@ from app.services import get_financial_statement
 from app.utils import model_mapper, natural_to_snake, json_camel_to_snake
 from core.mongodb import insert_one
 
+
 def main():
     print("inw")
     # Format theo thứ tự bên dưới cùng mã chứng khoán sẽ sử dụng
@@ -50,6 +51,5 @@ def main():
         )
 
 
-
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "tasks":
     main()

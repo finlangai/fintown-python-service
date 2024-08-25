@@ -8,16 +8,18 @@ def dev(c):
 
 @task
 def inw(c):
-    c.run("pymon inw.py")
+    c.run("python inw.py")
 
 
 @task
 def seed(c, name):
-    # c.run(f"python database/seeders/{name}_seeder.py")
     try:
-        with open(f"database/seeders/{name}_seeder.py") as pycode:
-            exec(pycode.read())
+        from database import seeders
+
+        getattr(seeders, f"{name}_seeder").main()
         print(f"{name} seeded")
 
-    except:
+    except Exception as e:
+        e.with_traceback(e.__traceback__)
+        print(e)
         print("Hell nah")

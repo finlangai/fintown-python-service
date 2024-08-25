@@ -1,6 +1,5 @@
-
 # TEST SYMBOLS
-STOCK_SYMBOLS = ["bvs"]
+STOCK_SYMBOLS = ["vnm", "hpg", "vcb", "mbb", "ssi", "vci", "bvs", "pvi"]
 
 # VN30
 # STOCK_SYMBOLS = [

@@ -17,5 +17,5 @@ def main():
         print(f"{text_to_red(symbol.upper())} dividends inserted")
 
 
-if __name__ == "__main__" or "tasks":
+if __name__ == "__main__" or __name__ == "tasks":
     main()

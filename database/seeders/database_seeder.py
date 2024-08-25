@@ -1,10 +1,10 @@
 from . import (
     companies_seeder,
+    formulars_seeder,
     holders_seeder,
     dividends_seeder,
     statements_seeder,
     formats_seeder,
-    formulas_seeder,
 )
 
 
@@ -17,8 +17,8 @@ def main():
     dividends_seeder.main()
     statements_seeder.main()
     formats_seeder.main()
-    formulas_seeder.main()
+    formulars_seeder.main()
 
 
-if __name__ == "__main__" or "tasks":
+if __name__ == "__main__" or __name__ == "tasks":
     main()

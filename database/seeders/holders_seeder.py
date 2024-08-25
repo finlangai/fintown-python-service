@@ -18,5 +18,5 @@ def main():
         print(f"{text_to_red(symbol.upper())} holders inserted")
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "tasks":
     main()

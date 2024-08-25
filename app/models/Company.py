@@ -1,21 +1,26 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from pydantic_mongo import AbstractRepository
+from pymongo.database import Database
+from typing import Optional
+
+from core.mongodb import get_database
 
 
 class Profile(BaseModel):
-    head_quarters: str
-    phone: str
-    fax: str
-    email: str
-    web_address: str
-    employees: int
-    business_license_number: str
-    date_of_issue: str
-    tax_id_number: str
-    charter_capital: float
-    date_of_listing: str
-    exchange: str
-    initial_listing_price: float
-    listing_volume: float
+    head_quarters: Optional[str]
+    phone: Optional[str]
+    fax: Optional[str]
+    email: Optional[str]
+    web_address: Optional[str]
+    employees: Optional[int]
+    business_license_number: Optional[str]
+    date_of_issue: Optional[str]
+    tax_id_number: Optional[str]
+    charter_capital: Optional[float]
+    date_of_listing: Optional[str]
+    exchange: Optional[str]
+    initial_listing_price: Optional[float]
+    listing_volume: Optional[float]
 
 
 # NOT YET IMPLEMENT
@@ -27,6 +32,7 @@ class DailyMetric(BaseModel):
 
 
 class Company(BaseModel):
+    id: Optional[str] = Field(default="ACB", alias="_id")
     icb_code: str
     company_name: str
     short_name: str
@@ -37,3 +43,14 @@ class Company(BaseModel):
     @staticmethod
     def get_collection_name():
         return "companies"
+
+    class Config:
+        populate_by_name = True
+
+
+class CompanyRepository(AbstractRepository[Company]):
+    def __init__(self, database: Database = get_database()):
+        super().__init__(database)
+
+    class Meta:
+        collection_name = "companies"
