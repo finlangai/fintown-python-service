@@ -35,14 +35,14 @@ CostOfSales = Parameter(
 # === BASIC
 BASIC = Expression(
     name="Basic",
-    expression=f"({{ {GrossProfit.slug} }} / {{ {NetSales.slug} }}) * 100",
+    expression=f"({{{GrossProfit.slug}}} / {{{NetSales.slug}}}) * 100",
     parameters=[GrossProfit, NetSales],
 )
 
 # === USING COGS
 USING_COGS = Expression(
     name="Using COGS",
-    expression=f"({{ {Sales.slug} }} - {{ {SalesDeductions.slug} }} - {{ {CostOfSales.slug} }}) / ({{ {Sales.slug} }} - {{ {SalesDeductions.slug} }}) * 100",
+    expression=f"({{{Sales.slug}}} - {{{SalesDeductions.slug}}} - {{{CostOfSales.slug}}}) / ({{{Sales.slug}}} - {{{SalesDeductions.slug}}}) * 100",
     parameters=[Sales, SalesDeductions, CostOfSales],
 )
 

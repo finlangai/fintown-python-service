@@ -10,7 +10,7 @@ class BaseResolver(StockFinanceService):
         """
         Check if the dataframe of the corresponding symbol on a timeline already exists
         -> yes - return the dataframe
-        -> no - fetch the dataframe then set and return
+        -> no - fetch the dataframe then cache and return
         """
         location_name = ParamLocation(location).name
 

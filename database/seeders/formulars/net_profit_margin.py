@@ -30,19 +30,19 @@ SalesDeductions = Parameter(
 # === BASIC
 BASIC = Expression(
     name="Basic",
-    expression=f"({{ {NetProfit.slug} }} / {{ {NetSales.slug} }}) * 100",
+    expression=f"({{{NetProfit.slug}}} / {{{NetSales.slug}}}) * 100",
     parameters=[NetProfit, NetSales],
 )
 # === SECONDARY
 SECONDARY = Expression(
     name="Secondary",
-    expression=f"({{ {NetProfit.slug} }} / {{ {TotalOperatingRevenue.slug} }}) * 100",
+    expression=f"({{{NetProfit.slug}}} / {{{TotalOperatingRevenue.slug}}}) * 100",
     parameters=[NetProfit, TotalOperatingRevenue],
 )
 # === TERTIARY
 TERTIARY = Expression(
     name="Tertiary",
-    expression=f"{{ {NetProfit.slug} }} / ({{ {Sales.slug} }} - {{ {SalesDeductions.slug} }}) * 100",
+    expression=f"{{{NetProfit.slug}}} / ({{{Sales.slug}}} - {{{SalesDeductions.slug}}}) * 100",
     parameters=[NetProfit, Sales, SalesDeductions],
 )
 
