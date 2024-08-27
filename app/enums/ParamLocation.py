@@ -1,8 +1,12 @@
 from enum import Enum
 
 
-class ParamLocation(str, Enum):
-    INCOME_STATEMENT = "income_statement"
-    BALANCE_SHEET = "balance_sheet"
-    CASH_FLOW = "cash_flow"
-    RATIO = "ratio"
+class ParamLocation(int, Enum):
+    """
+    Value must be of StockFinanceService's methods
+    """
+
+    ratio = 0
+    balance_sheet = 1
+    income_statement = 2
+    cash_flow = 3

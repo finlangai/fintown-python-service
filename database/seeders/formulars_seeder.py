@@ -1,6 +1,6 @@
 from core import mongodb
 from database.seeders.formulars import gross_profit_margin, net_profit_margin
-from app.models import Formula, FormulaRepository
+from app.models import FormulaRepository, Formular
 
 
 def main():

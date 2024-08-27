@@ -10,9 +10,10 @@ from core.mongodb import get_database
 from .Expression import Expression
 
 
-class Formula(BaseModel):
+class Formular(BaseModel):
     id: Optional[str] = Field(default=None, alias="_id")
     name: str
+    name_vi: str
     identifier: str
     order: int
     description: str
@@ -28,7 +29,7 @@ class Formula(BaseModel):
         json_encoders = {ObjectId: str}
 
 
-class FormulaRepository(AbstractRepository[Formula]):
+class FormulaRepository(AbstractRepository[Formular]):
     def __init__(self, database: Database = get_database()):
         super().__init__(database)
 
