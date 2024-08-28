@@ -5,3 +5,4 @@ from .Holder import *
 from .StatementFormat import *
 from .Formular import *
 from .Expression import *
+from .MetricHistory import *

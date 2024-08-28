@@ -1,3 +1,4 @@
+import pandas as pd
 from pandas import DataFrame, Series
 
 from app.models import Parameter
@@ -8,6 +9,16 @@ from app.services.formular_eval import BaseResolver
 class ResolverToolkit(BaseResolver):
     def get_column(df: DataFrame, name: str) -> DataFrame:
         return df[name].T.drop_duplicates().T.iloc[:, 0]
+
+    def apply_constraints(self, param: Parameter, df: DataFrame) -> DataFrame:
+        """
+        Apply constraints to the series
+        """
+        # check if it should be negative
+        if not param.is_allow_negative:
+            df = df[param.slug].apply(lambda x: abs(x) if pd.notna(x) else x)
+
+        return df
 
     def choose_best_column(self, df: DataFrame | Series, name: str) -> DataFrame:
         """
@@ -27,6 +38,7 @@ class ResolverToolkit(BaseResolver):
 
         col: Series = df.iloc[:, best_column_index]
         col.name = name
+
         return col.to_frame()
 
     def get_column(self, param: Parameter) -> DataFrame:
@@ -34,7 +46,12 @@ class ResolverToolkit(BaseResolver):
         Return the best columns for a field
         """
         df = self.get_data(location=param.location)
-        return self.choose_best_column(df[param.field], name=param.slug)
+        # get the best column
+        df = self.choose_best_column(df[param.field], name=param.slug)
+
+        # applying constraints
+        df = self.apply_constraints(param=param, df=df)
+        return df
 
     def check_sufficiency(self, parameters: list[Parameter]) -> bool:
         """
@@ -45,18 +62,25 @@ class ResolverToolkit(BaseResolver):
         )
         return is_sufficient
 
-    def apply_constraints(self, value: any, param: Parameter) -> int:
-        """
-        Apply constraints to value
-        """
-        # value = int(value)
-        if not param.is_allow_negative:
-            value = abs(value)
-
-        return value
-
     def safe_eval(self, expression: str):
         try:
             return eval(expression)
         except Exception:
-            return False
+            return None
+
+    def get_meta_df(self) -> DataFrame | None:
+        """
+        There should be at least one cache data as this function is called
+        """
+        for Param in ParamLocation:
+            df: DataFrame | None = getattr(self, Param.name, None)
+            if df is not None:
+                # get the report year and get the length report if is dealing with quarter data
+                query_array = ["yearReport"]
+                if self.period == "quarter":
+                    query_array.append("lengthReport")
+
+                df = df[query_array]
+                break
+
+        return df

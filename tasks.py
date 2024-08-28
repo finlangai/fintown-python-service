@@ -1,4 +1,6 @@
 from invoke import task
+import time
+from app.utils import print_green_bold
 
 
 @task
@@ -16,8 +18,12 @@ def seed(c, name):
     try:
         from database import seeders
 
+        start_time = time.time()
+
         getattr(seeders, f"{name}_seeder").main()
-        print(f"{name} seeded")
+        print_green_bold(
+            f"{name} seeded in {round(time.time() - start_time, 2)} seconds （＾∀＾●）ﾉｼ"
+        )
 
     except Exception as e:
         e.with_traceback(e.__traceback__)
