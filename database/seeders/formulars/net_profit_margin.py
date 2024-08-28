@@ -1,30 +1,12 @@
 from app.models import Expression, Formular, Parameter
 from app.enums import ParamLocation, FormulaType
 
-NetProfit = Parameter(
-    field="Net Profit For the Year",
-    slug="net_profit_for_the_year",
-    location=ParamLocation.income_statement,
-)
-NetSales = Parameter(
-    field="Net Sales",
-    slug="net_sales",
-    location=ParamLocation.income_statement,
-)
-TotalOperatingRevenue = Parameter(
-    field="Total operating revenue",
-    slug="total_operating_revenue",
-    location=ParamLocation.income_statement,
-)
-Sales = Parameter(
-    field="Sales",
-    slug="sales",
-    location=ParamLocation.income_statement,
-)
-SalesDeductions = Parameter(
-    field="Sales deductions",
-    slug="sales_deductions",
-    location=ParamLocation.income_statement,
+from database.seeders.formulars.parameters import (
+    NetProfit,
+    NetSales,
+    TotalOperatingRevenue,
+    Sales,
+    SalesDeductions,
 )
 
 # === BASIC
@@ -52,8 +34,9 @@ def get(order: int):
         category=FormulaType.FINANCIAL_METRIC,
         name="Net Profit Margin",
         name_vi="Biên lợi nhuận ròng",
+        abbr="NPM",
         identifier="net_profit_margin",
         order=order,
-        description="Net Profit Margin (biên lợi nhuận ròng) là tỷ lệ phần trăm lợi nhuận ròng so với doanh thu thuần của công ty. Nó cho biết công ty giữ lại bao nhiêu phần trăm doanh thu sau khi trừ đi tất cả các chi phí, bao gồm chi phí hoạt động, lãi vay và thuế.",
+        description="NPM (Net Profit Margin), hay Biên Lợi Nhuận Ròng, là chỉ số đo lường phần trăm lợi nhuận cuối cùng mà công ty thu được từ doanh thu sau khi đã trừ đi tất cả các chi phí, bao gồm giá vốn hàng bán, chi phí hoạt động, chi phí tài chính và thuế. Chỉ số này cho thấy khả năng sinh lời tổng thể của công ty từ hoạt động kinh doanh và là một thước đo quan trọng để đánh giá hiệu quả tài chính.",
         library=[BASIC, SECONDARY, TERTIARY],
     )

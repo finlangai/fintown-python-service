@@ -10,18 +10,26 @@ class BaseResolver(StockFinanceService):
         """
         Check if the dataframe of the corresponding symbol on a timeline already exists
         -> yes - return the dataframe
-        -> no - fetch the dataframe then cache and return
+        -> fetch the dataframe -> check if hierachical
+        -> yes - flatten
+        -> cache
+        -> return the dataframe
         """
         location_name = ParamLocation(location).name
 
         # check if the dataframe already exist
-        df = getattr(self, location_name, None)
+        df: DataFrame | None = getattr(self, location_name, None)
 
         if df is not None:
             return df
 
         # fetch the dataframe
         df = getattr(self.finance, location_name)()
+
+        # check if is hierachical to get second level
+        if df.columns.nlevels > 1:
+            df.columns = df.columns.get_level_values(1)
+
         # caching
         setattr(self, location_name, df)
 
