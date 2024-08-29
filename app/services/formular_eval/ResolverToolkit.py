@@ -68,17 +68,24 @@ class ResolverToolkit(BaseResolver):
         except Exception:
             return None
 
+    def get_meta_query(self) -> list:
+        """
+        Return the query array of metadata e.g. ['yearReport'] or ['yearReport','lengthReport']
+        """
+        # get the report year and get the length report if is dealing with quarter data
+        query_array = ["yearReport"]
+        if self.period == "quarter":
+            query_array.append("lengthReport")
+        return query_array
+
     def get_meta_df(self) -> DataFrame | None:
         """
         There should be at least one cache data as this function is called
         """
         for Param in ParamLocation:
-            df: DataFrame | None = getattr(self, Param.name, None)
+            df: DataFrame | None = self.cache.get(Param.name, None)
             if df is not None:
-                # get the report year and get the length report if is dealing with quarter data
-                query_array = ["yearReport"]
-                if self.period == "quarter":
-                    query_array.append("lengthReport")
+                query_array = self.get_meta_query()
 
                 df = df[query_array]
                 break

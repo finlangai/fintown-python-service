@@ -19,6 +19,7 @@ def main():
 
             print(f"{text_to_red(symbol.upper())} profile inserted")
     except Exception as e:
+        e.with_traceback()
         print(e)
 
 
