@@ -30,9 +30,9 @@ class Formular(BaseModel):
         json_encoders = {ObjectId: str}
 
 
-class FormulaRepository(AbstractRepository[Formular]):
+class FormularRepository(AbstractRepository[Formular]):
     def __init__(self, database: Database = get_database()):
         super().__init__(database)
 
     class Meta:
-        collection_name = "formula_library"
+        collection_name = "formular_library"

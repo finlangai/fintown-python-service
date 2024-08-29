@@ -19,6 +19,7 @@ class StockFinanceService(BaseVnStockService):
         self.lang = lang
         self.dropna = dropna
         self.period = period
+        self.cache = dict()
 
     def update_symbol(self, symbol: str):
         """

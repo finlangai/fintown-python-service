@@ -26,7 +26,7 @@ def seed(c, name):
 
         getattr(seeders, f"{name}_seeder").main()
         print_green_bold(
-            f"{name} seeded in {round(time.time() - start_time, 2)} seconds （＾∀＾●）ﾉｼ"
+            f"{name} seeder done in {round(time.time() - start_time, 2)} seconds （＾∀＾●）ﾉｼ"
         )
 
     except Exception as e:

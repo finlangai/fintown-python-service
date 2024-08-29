@@ -12,7 +12,7 @@ from database.seeders.formulars import (
     return_of_capital_employed,
     return_of_equity,
 )
-from app.models import FormulaRepository, Formular
+from app.models import FormularRepository, Formular
 from app.utils import print_green_bold
 
 
@@ -33,7 +33,7 @@ def main():
     for f in formulars:
         print_green_bold(f"=== {f.name}")
 
-    FormulaRepository().save_many(models=formulars)
+    FormularRepository().save_many(models=formulars)
 
 
 if __name__ == "__main__" or __name__ == "tasks":

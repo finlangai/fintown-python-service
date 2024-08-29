@@ -1,3 +1,4 @@
+from typing import Literal
 from app.services.vnstock import StockFinanceService
 from app.types import PeriodType
 from app.enums import ParamLocation
@@ -18,36 +19,34 @@ class BaseResolver(StockFinanceService):
         location_name = ParamLocation(location).name
 
         # check if the dataframe already exist
-        df: DataFrame | None = getattr(self, location_name, None)
+        df: DataFrame | None = self.cache.get(location_name, None)
 
+        # guard
         if df is not None:
             return df
 
-        # fetch the dataframe
-        df = getattr(self.finance, location_name)()
+        # call the corresponding function to fetch the dataframe
+        df = getattr(self, location_name)()
 
-        # check if is hierachical to get second level
+        # check if is hierachical to get second level ( dealing with ratio data)
         if df.columns.nlevels > 1:
             df.columns = df.columns.get_level_values(1)
 
         # caching
-        setattr(self, location_name, df)
+        self.cache[location_name] = df
 
         return df
 
-    def clean_finance_data(self) -> None:
+    def clean_cached_data(self) -> None:
         """
         clean cached dataframes
         """
-        self.ratio = None
-        self.balance_sheet = None
-        self.income_statement = None
-        self.cash_flow = None
+        self.cache.clear()
 
     def update_symbol(self, symbol: str):
         super().update_symbol(symbol)
-        self.clean_finance_data()
+        self.clean_cached_data()
 
     def update_period(self, period: PeriodType):
         super().update_period(period)
-        self.clean_finance_data()
+        self.clean_cached_data()
