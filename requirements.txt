@@ -9,3 +9,5 @@ inflection
 pymongo
 invoke
 vnstock3
+pandas
+scikit-learn

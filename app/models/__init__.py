@@ -6,3 +6,4 @@ from .StatementFormat import *
 from .Formular import *
 from .Expression import *
 from .MetricHistory import *
+from .Assessment import *
