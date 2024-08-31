@@ -30,7 +30,7 @@ def seed(c, name):
         )
 
     except Exception as e:
-        # e.with_traceback(e.__traceback__)
-        e.with_traceback()
+        e.with_traceback(e.__traceback__)
+        # e.with_traceback()
         print(e)
         print("Hell nah")

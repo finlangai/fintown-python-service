@@ -12,11 +12,20 @@ load_dotenv()
 ### ================================================================================
 
 from fastapi import FastAPI, responses
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="FinTown Python Service",
     version="369",
     swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"},
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],  # You can specify the methods you want to allow
+    allow_headers=["*"],  # You can specify the headers you want to allow
 )
 
 

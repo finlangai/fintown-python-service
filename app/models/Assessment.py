@@ -2,26 +2,15 @@ from pydantic import BaseModel, Field, field_validator
 from pydantic_mongo import AbstractRepository
 from pymongo.database import Database
 
-from typing import List, Optional, Dict
+from typing import List, Optional, Dict, Any
 from bson import ObjectId
 
 from core.mongodb import get_database
 
 
-class ForecastedMetric(BaseModel):
-    year: int
-    quarter: Optional[int] = None
-    value: float
-
-
-class YearlyAssessment(BaseModel):
-    updated_year: Optional[int] = None
-    forecasts: Optional[Dict[str, list[ForecastedMetric]]] = None
-    insights: Optional[Dict[str, str]] = None
-
-
-class QuarterlyAssessment(YearlyAssessment):
-    updated_quarter: Optional[int] = None
+class Forecasted(BaseModel):
+    year: Optional[int] = None
+    metrics: Optional[Dict[str, Any]] = None
 
 
 class Assessment(BaseModel):
@@ -30,9 +19,10 @@ class Assessment(BaseModel):
     """
 
     id: Optional[str] = Field(default=None, alias="_id")
-    symbol: str
-    quarterly: Optional[QuarterlyAssessment] = None
-    yearly: Optional[YearlyAssessment] = None
+    symbol: Optional[str] = None
+    updated_year: Optional[int] = None
+    forecasts: Optional[List[Forecasted]] = None
+    insights: Optional[Dict[str, str]] = None
 
     @field_validator("id", mode="before")
     def set_id(cls, v):

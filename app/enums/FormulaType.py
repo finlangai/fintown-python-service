@@ -1,6 +1,6 @@
 from enum import Enum
 
 
-class FormulaType(str, Enum):
-    FINANCIAL_METRIC = "0"
-    STOCK_VALUATION = "1"
+class FormulaType(int, Enum):
+    FINANCIAL_METRIC = 0
+    STOCK_VALUATION = 1
