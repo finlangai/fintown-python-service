@@ -4,13 +4,15 @@ from app.enums import FormulaType
 from database.seeders.formulars.parameters import (
     AttributableToParentCompany,
     OwnerEquity,
+    NetProfit,
 )
 
 # === BASIC
 BASIC = Expression(
     name="Basic",
-    expression=f"({{{AttributableToParentCompany.slug}}} / {{{OwnerEquity.slug}}}) * 100",
-    parameters=[AttributableToParentCompany, OwnerEquity],
+    # expression=f"({{{AttributableToParentCompany.slug}}} / {{{OwnerEquity.slug}}}) * 100",
+    expression=f"({{{NetProfit.slug}}} / {{{OwnerEquity.slug}}}) * 100",
+    parameters=[NetProfit, OwnerEquity],
 )
 
 
