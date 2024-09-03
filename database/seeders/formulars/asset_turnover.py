@@ -29,6 +29,7 @@ def get(order: int):
         name_vi="Vòng quay tài sản",
         abbr="AT",
         identifier="asset_turnover",
+        unit="vòng",
         order=order,
         description="Asset Turnover (Vòng Quay Tài Sản) là chỉ số đo lường hiệu quả sử dụng tài sản của công ty để tạo ra doanh thu. Chỉ số này cho biết mỗi đồng tài sản giúp công ty tạo ra bao nhiêu đồng doanh thu, phản ánh khả năng tối ưu hóa tài sản trong việc sản xuất doanh thu.",
         library=[BASIC, SECONDARY],

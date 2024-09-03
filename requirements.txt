@@ -11,3 +11,4 @@ invoke
 vnstock3
 pandas
 scikit-learn
+langchain-groq

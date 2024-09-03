@@ -18,6 +18,7 @@ def get(order: int):
         name_vi="Vốn được sử dụng",
         abbr="CE",
         identifier="capital_employed",
+        unit="Tỷ đồng",
         order=order,
         description="Capital Employed (Vốn Được Sử Dụng) là chỉ số đo lường tổng số vốn mà công ty đã đầu tư vào hoạt động kinh doanh để tạo ra lợi nhuận. Chỉ số này bao gồm vốn chủ sở hữu và nợ dài hạn, cho thấy tổng nguồn lực tài chính mà công ty sử dụng để duy trì và mở rộng hoạt động của mình.",
         library=[BASIC],

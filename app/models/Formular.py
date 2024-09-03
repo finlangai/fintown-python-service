@@ -16,10 +16,12 @@ class Formular(BaseModel):
     name_vi: str
     abbr: str
     identifier: str
-    order: int
     description: str
-    category: FormulaType
     library: list[Expression]
+    order: int
+    category: FormulaType
+    is_percentage: bool = False
+    unit: Optional[str] = None
 
     @field_validator("id", mode="before")
     def set_id(cls, v):

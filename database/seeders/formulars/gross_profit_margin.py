@@ -30,6 +30,7 @@ def get(order: int):
         order=order,
         name="Gross Profit Margin",
         name_vi="Biên lợi nhuận gộp",
+        is_percentage=True,
         abbr="GPM",
         identifier="gross_profit_margin",
         description="GPM (Gross Profit Margin), hay Biên Lợi Nhuận Gộp, là chỉ số đo lường phần trăm doanh thu còn lại sau khi đã trừ đi giá vốn hàng bán. Chỉ số này phản ánh hiệu quả kiểm soát chi phí sản xuất và khả năng sinh lời từ hoạt động kinh doanh chính của công ty.",
