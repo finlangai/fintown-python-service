@@ -1,4 +1,4 @@
-from app.models import Expression, Formular
+from app.models import Expression, Formular, FormularMeta
 from app.enums import FormulaType
 
 from database.seeders.formulars.parameters import (
@@ -23,14 +23,18 @@ SECONDARY = Expression(
 
 
 def get(order: int):
-    return Formular(
+    meta = FormularMeta(
         category=FormulaType.FINANCIAL_METRIC,
+        is_percentage=False,
+        order=order,
+        unit="vòng",
+    )
+    return Formular(
         name="Asset Turnover",
         name_vi="Vòng quay tài sản",
         abbr="AT",
         identifier="asset_turnover",
-        unit="vòng",
-        order=order,
         description="Asset Turnover (Vòng Quay Tài Sản) là chỉ số đo lường hiệu quả sử dụng tài sản của công ty để tạo ra doanh thu. Chỉ số này cho biết mỗi đồng tài sản giúp công ty tạo ra bao nhiêu đồng doanh thu, phản ánh khả năng tối ưu hóa tài sản trong việc sản xuất doanh thu.",
+        metadata=meta,
         library=[BASIC, SECONDARY],
     )

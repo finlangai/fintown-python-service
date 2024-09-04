@@ -17,7 +17,9 @@ def main():
     print("Metrics seeder")
     # get the list of formulars
     metric_formulars = list(
-        FormularRepository().find_by(query={"category": FormulaType.FINANCIAL_METRIC})
+        FormularRepository().find_by(
+            query={"metadata.category": FormulaType.FINANCIAL_METRIC}
+        )
     )
 
     # companies = list(CompanyRepository().find_by(query={"_id": "vnm"}))
