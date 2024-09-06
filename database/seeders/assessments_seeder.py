@@ -1,3 +1,8 @@
+import pandas as pd
+import numpy as np
+from datetime import datetime
+from core import mongodb
+
 from app.utils import print_pink_bold, print_green_bold
 from app.models import (
     CompanyRepository,
@@ -5,24 +10,32 @@ from app.models import (
     Assessment,
     Forecasted,
     AssessmentRepository,
+    FormularRepository,
 )
 from app.services.forecasting import LinearRegressionForecaster
-from core import mongodb
-import pandas as pd
-import numpy as np
-from datetime import datetime
+from app.enums import FormulaType
 
 
 def main():
     print("Assessment Seeder")
-    # companies = list(CompanyRepository().find_by(query={"_id": "MBB"}))
-    companies = list(CompanyRepository().find_by(query={}))
+    companies = list(CompanyRepository().find_by(query={"_id": "MBB"}))
+    # companies = list(CompanyRepository().find_by(query={}))
 
     forecaster = LinearRegressionForecaster()
+
     assessmentRepo = AssessmentRepository()
+    formulars_dict = {
+        f.identifier: f
+        for f in list(
+            FormularRepository().find_by(
+                query={"metadata.category": FormulaType.FINANCIAL_METRIC}
+            )
+        )
+    }
+
     for c in companies:
         print_pink_bold(f"=== {c.id}")
-        # assessment = Assessment(symbol=c.id)
+        # === INNER
 
         history = mongodb.query_with_projection(
             collection_name=MetricHistoryRepository.Meta.collection_name,
@@ -30,31 +43,26 @@ def main():
             projection={"_id": 0, "year": 1, "metrics": 1},
         )
 
-        df = pd.json_normalize(data=history)
+        df = forecaster.prepare_dataframe(raw=history)
 
-        df.set_index("year", inplace=True)
-        df.sort_index(ascending=True, inplace=True)
-
-        df.columns = [col.replace("metrics.", "") for col in df.columns]
-
-        highest_index = df.index.max()
         acc_df = pd.DataFrame()
+
         for col_name in df.columns:
-            forecaster.reset()
 
-            series = df[col_name].dropna()
-            years_2d = series.index.values.reshape(-1, 1)
-            targets_1d = series.values
+            # get the corresponding metric series and remove invalid rows
+            series = forecaster.polish_series(df, col_name)
 
-            forecaster.train(X_2d=years_2d, y_1d=targets_1d)
-            futures = np.array(range(highest_index + 1, highest_index + 6))
+            forecasted = forecaster.forecast(initial=series, years_ahead=5)
+            acc_df = pd.concat([acc_df, forecasted], axis=1)
 
-            result = forecaster.forecast(X_2d=futures.reshape(-1, 1))
-            result = pd.Series(data=result, index=futures)
-            result.name = col_name
-            acc_df = pd.concat([acc_df, result], axis=1)
+        print(acc_df)
 
+        import sys
+
+        sys.exit()
+        # forecasted metrics for 5 years ahead
         forecasted_list: list[Forecasted] = []
+
         for index, row in acc_df.iterrows():
             metrics: dict = {}
             for col_name in acc_df.columns:
@@ -64,7 +72,7 @@ def main():
         assessment = Assessment(
             symbol=c.id, updated_year=datetime.now().year, forecasts=forecasted_list
         )
-        assessmentRepo.save(model=assessment)
+        # assessmentRepo.save(model=assessment)
 
 
 if __name__ == "__main__" or __name__ == "tasks":

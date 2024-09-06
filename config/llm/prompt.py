@@ -16,7 +16,6 @@ appraise: 1
 overall: 2
 }}
 
-
 Hãy trả lời bằng tiếng Việt và định dạng kết quả dưới dạng JSON với các trường tương ứng cho mỗi phần phân tích.
 Lưu ý:
 - Chỉ trả về JSON
@@ -25,6 +24,7 @@ Lưu ý:
 - Liên hệ ngành nghề của công ty với chỉ số
 """
 
+# parameters: symbol, name, industry, metric_info, metric_histories, forecast
 human_prompt = """
 Mã chứng khoán: {symbol}
 
@@ -45,15 +45,3 @@ Dữ liệu dự đoán 5 năm tiếp theo của chỉ số:
 base_prompt = ChatPromptTemplate.from_messages(
     [("system", system_prompt), ("human", human_prompt)]
 )
-
-
-# for better typing
-def define_prompt(symbol, name, industry, metric_info, metric_histories, forecast):
-    return base_prompt.format(
-        symbol=symbol,
-        name=name,
-        industry=industry,
-        metric_info=metric_info,
-        metric_histories=metric_histories,
-        forecast=forecast,
-    )

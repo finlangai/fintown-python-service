@@ -10,6 +10,13 @@ from core.mongodb import get_database
 from .Expression import Expression
 
 
+class FormularMeta(BaseModel):
+    order: int
+    category: FormulaType
+    is_percentage: bool = False
+    unit: Optional[str] = None
+
+
 class Formular(BaseModel):
     id: Optional[str] = Field(default=None, alias="_id")
     name: str
@@ -17,11 +24,8 @@ class Formular(BaseModel):
     abbr: str
     identifier: str
     description: str
+    metadata: FormularMeta
     library: list[Expression]
-    order: int
-    category: FormulaType
-    is_percentage: bool = False
-    unit: Optional[str] = None
 
     @field_validator("id", mode="before")
     def set_id(cls, v):
