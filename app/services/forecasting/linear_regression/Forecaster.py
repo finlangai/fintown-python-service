@@ -1,6 +1,7 @@
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 from ..Toolkit import ForecastingToolkit
+import pandas as pd
 
 
 class LinearRegressionForecaster(ForecastingToolkit):
@@ -10,6 +11,7 @@ class LinearRegressionForecaster(ForecastingToolkit):
 
     def reset(self):
         self.model = LinearRegression()
+        self.lastest_year = None
 
     def train(self, X_2d, y_1d):
         """
@@ -20,11 +22,25 @@ class LinearRegressionForecaster(ForecastingToolkit):
         """
         self.model.fit(X_2d, y_1d)
 
-    def forecast(self, X_2d):
+    def forecast(self, initial: pd.Series, years_ahead: int) -> pd.Series:
         """
-        Make predictions using the fitted model.
+        Take in the initial series of the metrics and how many years ahead to forecast iteratively with Linear Regression
+        """
+        # get the lastest year
+        lastest_year: int = initial.index.max()
 
-        :param X_2d: 2D array-like of shape (n_samples, n_features)
-        :return: 1D array of predictions
-        """
-        return self.model.predict(X_2d)
+        # loop through the
+        for count in range(years_ahead):
+            # reset the model
+            self.reset()
+
+            years_2d = initial.index.values.reshape(-1, 1)
+            targets_1d = initial.values
+
+            self.train(X_2d=years_2d, y_1d=targets_1d)
+            target_year = lastest_year + count + 1
+            predicted_value = self.model.predict(X=[[target_year]])[0]
+            initial.loc[target_year] = predicted_value
+
+        # return forecasted portion of the series, which is from the latest year in the initial + 1
+        return initial.loc[lastest_year + 1 :]
