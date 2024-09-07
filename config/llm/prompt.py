@@ -8,7 +8,7 @@ Bạn sẽ được cung cấp mã chứng khoán, tên công ty và ngành ngh�
 
 Yêu cầu đầu ra:
 1. Phân tích xu hướng của chỉ số trong 5 năm qua và đánh giá dự đoán cho 5 năm tiếp theo
-2. Nhận xét về khía cạnh mà chỉ số phản ánh về triển vọng hoặc tình hình của công ty
+2. Liên hệ, nhận xét về khía cạnh mà chỉ số phản ánh với triển vọng và tình hình của công ty
 
 Yêu cầu định dạng JSON có các field như bên dưới, thay giá trị các field bằng kết quả từ yêu cầu đầu ra với số thứ tự tương ứng:
 {{ 

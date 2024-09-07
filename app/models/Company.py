@@ -1,7 +1,9 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from pydantic_mongo import AbstractRepository
 from pymongo.database import Database
+
 from typing import Optional
+from bson import ObjectId
 
 from core.mongodb import get_database
 
@@ -50,8 +52,13 @@ class Company(BaseModel):
     profile: Profile
     summary: Summary
 
+    @field_validator("id", mode="before")
+    def set_id(cls, v):
+        return str(v) if isinstance(v, ObjectId) else v
+
     class Config:
         populate_by_name = True
+        json_encoders = {ObjectId: str}
 
 
 class CompanyRepository(AbstractRepository[Company]):

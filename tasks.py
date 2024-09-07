@@ -19,18 +19,11 @@ def inw(c):
 
 @task
 def seed(c, name):
-    try:
-        from database import seeders
+    from database import seeders
 
-        start_time = time.time()
+    start_time = time.time()
 
-        getattr(seeders, f"{name}_seeder").main()
-        print_green_bold(
-            f"{name} seeder done in {round(time.time() - start_time, 2)} seconds （＾∀＾●）ﾉｼ"
-        )
-
-    except Exception as e:
-        e.with_traceback(e.__traceback__)
-        # e.with_traceback()
-        print(e)
-        print("Hell nah")
+    getattr(seeders, f"{name}_seeder").main()
+    print_green_bold(
+        f"{name} seeder done in {round(time.time() - start_time, 2)} seconds （＾∀＾●）ﾉｼ"
+    )

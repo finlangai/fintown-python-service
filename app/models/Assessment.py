@@ -22,7 +22,7 @@ class Assessment(BaseModel):
     symbol: Optional[str] = None
     updated_year: Optional[int] = None
     forecasts: Optional[List[Forecasted]] = None
-    insights: Optional[Dict[str, str]] = None
+    insights: Optional[Dict[str, Any]] = None
 
     @field_validator("id", mode="before")
     def set_id(cls, v):

@@ -8,7 +8,7 @@ class ForecastingToolkit:
 
     def prepare_dataframe(self, raw: list[dict]) -> pd.DataFrame:
         """
-        Prepare appropriate dataframe from metrics data
+        Prepare appropriate dataframe from metrics data which is a list of dicts retrieve from database
         """
 
         df = pd.json_normalize(data=raw)
