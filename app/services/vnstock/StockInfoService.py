@@ -8,17 +8,20 @@ class StockInfoService(BaseVnStockService):
         super().__init__(symbol, source)
         self.company = self.stock.company
 
+    def update_symbol(self, symbol: str):
+        self.company._update_data_source(symbol=symbol)
+
     def overview(self) -> DataFrame:
-        return self.company.overview()
+        return self.first_row_to_dict(self.company.overview())
 
     def profile(self) -> DataFrame:
-        return self.company.profile()
+        return self.first_row_to_dict(self.company.profile())
 
     def subsidiaries(self) -> DataFrame:
-        return self.company.subsidiaries()
+        return self.first_row_to_dict(self.company.subsidiaries())
 
     def events(self) -> DataFrame:
-        return self.company.events()
+        return self.first_row_to_dict(self.company.events())
 
     def news(self) -> DataFrame:
-        return self.company.news()
+        return self.first_row_to_dict(self.company.news())

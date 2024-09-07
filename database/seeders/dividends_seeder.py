@@ -2,7 +2,7 @@ from app.utils import print_green_bold, model_mapper, json_camel_to_snake, text_
 from app.models import Dividend
 from app.services import get_dividends
 from core.mongodb import insert_many
-from database.seeding_stocks import STOCK_SYMBOLS
+from config.seeder import STOCK_SYMBOLS
 
 
 def main():

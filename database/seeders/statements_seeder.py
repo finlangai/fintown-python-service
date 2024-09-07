@@ -6,7 +6,7 @@ from app.models import FinancialStatement, Company
 from app.services import get_financial_statement
 from app.utils import text_to_red, print_green_bold
 
-from config.config import STATEMENT_QUARTERLY_LIMIT, STATEMENT_YEARLY_LIMIT
+from config.seeder.config import STATEMENT_QUARTERLY_LIMIT, STATEMENT_YEARLY_LIMIT
 
 
 def main():

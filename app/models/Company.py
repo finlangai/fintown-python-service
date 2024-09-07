@@ -6,7 +6,24 @@ from typing import Optional
 from core.mongodb import get_database
 
 
+class CompanyDelta(BaseModel):
+    delta_in_week: Optional[float]
+    delta_in_month: Optional[float]
+    delta_in_year: Optional[float]
+
+
+class Summary(BaseModel):
+    company_profile: Optional[str]
+    history_dev: Optional[str]
+    company_promise: Optional[str]
+    business_risk: Optional[str]
+    key_developments: Optional[str]
+    business_strategies: Optional[str]
+
+
 class Profile(BaseModel):
+    short_name: str
+    international_name: str
     head_quarters: Optional[str]
     phone: Optional[str]
     fax: Optional[str]
@@ -23,26 +40,15 @@ class Profile(BaseModel):
     listing_volume: Optional[float]
 
 
-# NOT YET IMPLEMENT
-class DailyMetric(BaseModel):
-    eps: float
-    price_to_earnings: float
-    price_to_book: float
-    ev_to_ebit: float
-
-
 class Company(BaseModel):
-    id: Optional[str] = Field(default="ACB", alias="_id")
+    id: Optional[str] = Field(default=None, alias="_id")
+    symbol: str
     icb_code: str
     company_name: str
-    short_name: str
-    international_name: str
+    industry: str
+    delta: CompanyDelta
     profile: Profile
-    # daily_metrics: DailyMetric
-
-    @staticmethod
-    def get_collection_name():
-        return "companies"
+    summary: Summary
 
     class Config:
         populate_by_name = True

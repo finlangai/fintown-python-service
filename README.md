@@ -1,6 +1,6 @@
 ### Python version >=3.10
 
-#### The list of stock symbols seeders will seed lie in `database/seeding_stocks.py`
+#### The list of stock symbols seeders will seed lie in `config/seeder/stock_list.py`
 
 ### **Invoke** commands to use after install dependencies
 
