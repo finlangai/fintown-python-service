@@ -1,5 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, field_validator
 from core import mongodb as db
+from pydantic_mongo import AbstractRepository
+from pymongo.database import Database
+from core.mongodb import get_database
+
+from bson import ObjectId
 
 from config import CASHFLOW_DIRECT_ICB_CODES, CF_DIRECT_ICB_BLACKLIST
 from typing import Optional
@@ -7,12 +12,22 @@ from app.enums import StatementType
 
 
 class FinancialStatement(BaseModel):
+    id: Optional[str] = Field(default=None, alias="_id")
     symbol: str
     year: int
     quarter: int
-    balance_sheet: Optional[object] = None
-    income_statement: Optional[object] = None
-    cashflow_statement: Optional[object] = None
+    balance_sheet: Optional[list] = None
+    income_statement: Optional[list] = None
+    is_cashflow_direct: bool
+    cashflow_statement: Optional[list] = None
+
+    @field_validator("id", mode="before")
+    def set_id(cls, v):
+        return str(v) if isinstance(v, ObjectId) else v
+
+    class Config:
+        populate_by_name = True
+        json_encoders = {ObjectId: str}
 
     @staticmethod
     def get_collection_name():
@@ -41,37 +56,29 @@ class FinancialStatement(BaseModel):
         return map
 
     @staticmethod
-    def statement_formatter(data: list, period: str, keys_map: dict[str:str]):
+    def statement_formatter(data: list, period: str) -> list | None:
         """
         data: mảng dữ liệu gốc khi get báo cáo tài chính
         period: thời điểm của dữ liệu của báo cáo cụ thể trong mảng values ở từng field
 
-        Nhận vào mảng dữ liệu cùng period của quý hoặc năm
-        của báo cáo cần lấy sau đó trả về báo cáo đó dưới dạng object
+        Input mảng dữ liệu gốc từ fireant và trả về dữ liệu
         """
 
         # Kiểm tra thời điểm có tồn tại trong báo cáo tài chính được trả về hay không
-        is_present = next(
+        period_index = next(
             (
-                timestamp
-                for timestamp in data[0]["values"]
+                i
+                for i, timestamp in enumerate(data[0]["values"])
                 if timestamp.get("period") == period
             ),
             None,
         )
-        if is_present is None:
+
+        # Trả về None nếu báo cáo tại thời điểm yêu cầu không tồn tại
+        if period_index is None:
             return None
 
-        statement = {
-            keys_map[field["name"]]: next(
-                (
-                    metric["value"]
-                    for metric in field["values"]
-                    if metric.get("period") == period
-                )
-            )
-            for field in data
-        }
+        statement = [field["values"][period_index]["value"] for field in data]
 
         return statement
 
@@ -92,3 +99,11 @@ class FinancialStatement(BaseModel):
             if is_getting_direct
             else StatementType.CASHFLOW_INDIRECT
         )
+
+
+class FinancialStatementRepository(AbstractRepository[FinancialStatement]):
+    def __init__(self, database: Database = get_database()):
+        super().__init__(database)
+
+    class Meta:
+        collection_name = "financial_statements"
