@@ -8,3 +8,4 @@ from .metrics_seeder import *
 from .assessments_seeder import *
 from .formulars import *
 from .events_seeder import *
+from .news_seeder import *
