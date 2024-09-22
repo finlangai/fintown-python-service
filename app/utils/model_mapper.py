@@ -8,6 +8,10 @@ def model_mapper(
 ) -> dict:
     """
     THIS FUNCTION IS USED TO MAP CORRESPONSINDG JSON DATA INTO APPROPRIATE SHAPE
+
+    model: the pydantic model with required fields
+    data: the dict that contains raw and unmapped data
+    shifted_fields: for manually adding additional fields to the result
     """
     fields = model.model_fields
     result: dict = copy(shifted_fields)

@@ -7,3 +7,4 @@ from .formulars_seeder import *
 from .metrics_seeder import *
 from .assessments_seeder import *
 from .formulars import *
+from .events_seeder import *
