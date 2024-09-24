@@ -21,7 +21,7 @@ class Formular(BaseModel):
     id: Optional[str] = Field(default=None, alias="_id")
     name: str
     name_vi: str
-    abbr: str
+    display_name: str
     identifier: str
     description: str
     metadata: FormularMeta

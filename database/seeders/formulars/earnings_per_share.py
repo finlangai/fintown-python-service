@@ -27,7 +27,7 @@ def get(order: int):
         category=FormulaType.FINANCIAL_METRIC,
         name="Earnings Per Share",
         name_vi="Lợi nhuận trên mỗi cổ phiếu",
-        abbr="EPS",
+        display_name="EPS",
         identifier="earnings_per_share",
         description="EPS (Earnings Per Share), hay Lợi Nhuận trên Mỗi Cổ Phiếu, là chỉ số đo lường phần lợi nhuận ròng của công ty thuộc về mỗi cổ phiếu đang lưu hành. Chỉ số này cho biết số tiền lợi nhuận mà mỗi cổ đông nhận được cho mỗi cổ phiếu của mình, phản ánh khả năng sinh lời của công ty từ góc độ cổ đông.",
         metadata=meta,

@@ -6,7 +6,6 @@ from core.mongodb import insert_one
 
 
 def main():
-    print("inw")
     # Format theo thứ tự bên dưới cùng mã chứng khoán sẽ sử dụng
     # Chung: hpg
     # Ngân Hàng: vcb
@@ -35,9 +34,9 @@ def main():
                 model_mapper(
                     model=FieldInfo,
                     data=json_camel_to_snake(field),
-                    shifted_fields={
-                        "snake_case": natural_to_snake(text=field.get("name"))
-                    },
+                    # shifted_fields={
+                    #     "snake_case": natural_to_snake(text=field.get("name"))
+                    # },
                 )
                 for field in get_statement(type=type)
             ]

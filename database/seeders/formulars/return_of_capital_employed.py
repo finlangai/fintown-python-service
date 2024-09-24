@@ -32,7 +32,7 @@ def get(order: int):
         category=FormulaType.FINANCIAL_METRIC,
         name="Return on Capital Employed",
         name_vi="Tỷ suất lợi nhuận trên vốn được sử dụng",
-        abbr="ROCE",
+        display_name="ROCE",
         identifier="return_on_capital_employed",
         description="Return on Capital Employed (ROCE), hay Tỷ Suất Lợi Nhuận Trên Vốn Được Sử Dụng, là chỉ số đo lường hiệu quả sử dụng vốn trong việc tạo ra lợi nhuận. Chỉ số này cho biết mỗi đồng vốn được sử dụng để đầu tư vào công ty tạo ra bao nhiêu đồng lợi nhuận trước lãi vay và thuế, phản ánh khả năng sinh lời và hiệu quả của việc sử dụng vốn trong hoạt động kinh doanh.",
         metadata=meta,

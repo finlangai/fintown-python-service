@@ -27,7 +27,7 @@ def get(order: int):
         category=FormulaType.FINANCIAL_METRIC,
         name="Return on Equity",
         name_vi="Tỷ lệ lợi nhuận trên vốn chủ sở hữu",
-        abbr="ROE",
+        display_name="ROE",
         identifier="return_on_equity",
         description="ROE (Return on Equity), hay Tỷ Suất Lợi Nhuận Trên Vốn Chủ Sở Hữu, là chỉ số đo lường khả năng sinh lời của một công ty dựa trên vốn chủ sở hữu. Chỉ số này cho biết lợi nhuận mà công ty tạo ra từ mỗi đồng vốn mà cổ đông đầu tư, phản ánh hiệu quả sử dụng vốn của công ty để tạo ra giá trị cho cổ đông.",
         metadata=meta,
