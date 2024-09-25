@@ -14,6 +14,7 @@ class FormularMeta(BaseModel):
     order: int
     category: FormulaType
     is_percentage: bool = False
+    is_should_divine_by_billion: bool = False
     unit: Optional[str] = None
 
 

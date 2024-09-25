@@ -15,6 +15,7 @@ def get(order: int):
     meta = FormularMeta(
         category=FormulaType.FINANCIAL_METRIC,
         is_percentage=False,
+        is_should_divine_by_billion=True,
         order=order,
         unit="tỷ đồng",
     )

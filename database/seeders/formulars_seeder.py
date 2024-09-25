@@ -17,6 +17,7 @@ from app.utils import print_green_bold
 
 
 def main():
+    # the number that got passed to get function is the order
     formulars = [
         gross_profit_margin.get(1),
         net_profit_margin.get(2),
