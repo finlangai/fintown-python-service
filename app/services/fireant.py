@@ -9,9 +9,31 @@ from app.utils import fetch_url
 
 
 # === GET DIVIDENDS
-def get_dividends(symbol: str, count: int):
-    url = ENDPOINT_DIVIDENDS.format(symbol)
-    params = {"count": count}
+# def get_dividends(symbol: str, count: int):
+#     url = ENDPOINT_DIVIDENDS.format(symbol)
+#     params = {"count": count}
+#     return fetch_url(url=url, params=params)
+
+
+def get_dividends(
+    symbol: str,
+    limit: int = 1000,
+    type: int = 0,
+    offset: int = 0,
+    order_by: int = 1,
+    start_date="2000-01-01",
+    end_date="2034-09-25",
+):
+    url = ENDPOINT_DIVIDENDS
+    params = {
+        "symbol": symbol,
+        "limit": limit,
+        "type": type,
+        "offset": offset,
+        "orderBy": order_by,
+        "startDate": start_date,
+        "endDate": end_date,
+    }
     return fetch_url(url=url, params=params)
 
 

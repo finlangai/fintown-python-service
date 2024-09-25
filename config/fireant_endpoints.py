@@ -9,11 +9,13 @@ ENDPOINT_FINANCIAL_STATEMENT = (
 )
 
 # placeholder: symbol | params: count: int
-ENDPOINT_DIVIDENDS = "https://restv2.fireant.vn/symbols/{}/dividends"
+# ENDPOINT_DIVIDENDS = "https://restv2.fireant.vn/symbols/{}/dividends"
+
+# placeholder: symbol, limit | params: count: int
+ENDPOINT_DIVIDENDS = "https://restv2.fireant.vn/events/search"
 
 # placeholder: symbol
 ENDPOINT_HOLDERS = "https://restv2.fireant.vn/symbols/{}/holders"
 
 # placeholder: symbol
 ENDPOINT_PROFILE = "https://restv2.fireant.vn/symbols/{}/profile"
-
