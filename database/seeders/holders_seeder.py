@@ -15,7 +15,7 @@ def main():
         ]
 
         insert_many(collection_name="holders", documents=holders)
-        print(f"{text_to_red(symbol.upper())} holders inserted")
+        print(f"{len(holders)} inserted for {text_to_red(symbol.upper())}")
 
 
 if __name__ == "__main__" or __name__ == "tasks":

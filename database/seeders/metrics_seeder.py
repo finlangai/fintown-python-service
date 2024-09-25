@@ -14,7 +14,8 @@ from app.types import PeriodType
 
 
 def main():
-    print("Metrics seeder")
+    print_green_bold("=== SEEDING METRICS")
+
     # get the list of formulars
     metric_formulars = list(
         FormularRepository().find_by(
@@ -22,7 +23,7 @@ def main():
         )
     )
 
-    # companies = list(CompanyRepository().find_by(query={"_id": "vnm"}))
+    # companies = list(CompanyRepository().find_by(query={"symbol": "vnm"}))
     companies = list(CompanyRepository().find_by(query={}))
 
     # init resolver
@@ -31,8 +32,8 @@ def main():
 
     # loop through each company
     for c in companies:
-        print_pink_bold(f"=== {c.id.upper()}")
-        resolver.update_symbol(c.id)
+        print_pink_bold(f"=== {c.symbol.upper()}")
+        resolver.update_symbol(c.symbol)
 
         # seed quarterly and yearly metrics records for each company
         for period in timelines:
@@ -51,7 +52,7 @@ def main():
             if period == "quarter":
                 records = [
                     MetricHistory(
-                        symbol=c.id.upper(),
+                        symbol=c.symbol.upper(),
                         year=index[0],
                         quarter=index[1],
                         metrics=row.to_dict(),
@@ -61,7 +62,7 @@ def main():
             else:
                 records = [
                     MetricHistory(
-                        symbol=c.id.upper(),
+                        symbol=c.symbol.upper(),
                         year=index,
                         metrics=row.to_dict(),
                     )
