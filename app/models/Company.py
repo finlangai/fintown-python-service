@@ -40,6 +40,7 @@ class Profile(BaseModel):
     exchange: Optional[str]
     initial_listing_price: Optional[float]
     listing_volume: Optional[float]
+    market_cap: Optional[float]
 
 
 class Company(BaseModel):

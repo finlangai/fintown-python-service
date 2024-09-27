@@ -15,11 +15,13 @@ def main():
             info_service.update_symbol(symbol)
 
             raw: dict = json_camel_to_snake(fa.get_profile(symbol))
+            raw.update(json_camel_to_snake(fa.get_fundamental(symbol)))
             raw.update(info_service.overview())
             raw.update(info_service.profile())
             record = model_mapper(
                 model=Company, data=raw, shifted_fields={"symbol": symbol}
             )
+            record["symbol"] = symbol
 
             mongodb.insert_one(collection_name="companies", document=record)
 
