@@ -13,7 +13,7 @@ class FieldInfo(BaseModel):
     snake_case: str
     level: int
     parent_id: int
-    expanded: bool
+    # expanded: bool
 
 
 class StatementFormat(BaseModel):

@@ -22,14 +22,18 @@ def main():
     ]
 
     for symbol, icb_ranges in zip(symbol_list, raw_icb_ranges):
+        # Dict storing statement formats of the four statement types
         structures = dict()
+
+        # Loop through each statement type
         for type in StatementType:
-            # Tạo hàm closure
+            # Define closure function
             def get_statement(type: StatementType):
                 return get_financial_statement(
                     symbol=symbol, type=type, limit=1, quarter=0
                 )
 
+            # Map each statement format into its corresponding name
             structures[type.name.lower()] = [
                 model_mapper(
                     model=FieldInfo,
