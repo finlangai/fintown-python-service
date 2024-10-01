@@ -11,3 +11,4 @@ from .events_seeder import *
 from .news_seeder import *
 from .subsidiaries_seeder import *
 from .database_seeder import *
+from .logos_seeder import *

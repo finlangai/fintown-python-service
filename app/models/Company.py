@@ -26,6 +26,7 @@ class Summary(BaseModel):
 class Profile(BaseModel):
     short_name: str
     international_name: str
+    is_using_cf_direct: bool
     head_quarters: Optional[str]
     phone: Optional[str]
     fax: Optional[str]
@@ -49,6 +50,7 @@ class Company(BaseModel):
     icb_code: str
     company_name: str
     industry: str
+    logo: Optional[str] = None
     delta: CompanyDelta
     profile: Profile
     summary: Summary

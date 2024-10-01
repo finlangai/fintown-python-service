@@ -4,3 +4,4 @@ inw.py
 __pycache__/
 .env
 cache
+firebase-adminsdk.json
