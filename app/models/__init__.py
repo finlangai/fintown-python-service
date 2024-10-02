@@ -10,3 +10,4 @@ from .Assessment import *
 from .Event import *
 from .News import *
 from .Subsidiary import *
+from .StockQuote import *

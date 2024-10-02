@@ -3,6 +3,7 @@ from typing import Union
 
 from app.types import IntervalType
 from app.services.vnstock import BaseVnStockService
+from vnstock3 import Quote
 
 
 class StockQuoteService(BaseVnStockService):

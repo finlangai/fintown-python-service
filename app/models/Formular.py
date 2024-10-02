@@ -13,6 +13,7 @@ from .Expression import Expression
 class FormularMeta(BaseModel):
     order: int
     category: FormulaType
+    # group: Optional[int] = None
     is_percentage: bool = False
     is_should_divine_by_billion: bool = False
     unit: Optional[str] = None
