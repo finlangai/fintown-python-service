@@ -133,3 +133,8 @@ MarketCap = Parameter(
     slug="market_capital_bn_vnd",
     location=ParamLocation.ratio,
 )
+
+# ===== MARKET PRICE
+ClosedPrice = Parameter(
+    field="Closed Price", slug="closed_price", location=ParamLocation.market_price
+)

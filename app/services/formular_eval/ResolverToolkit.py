@@ -25,7 +25,7 @@ class ResolverToolkit(BaseResolver):
         This function take in the extracted columns for a parameter and return the best one
         *By best one, I mean has the least amount of 0 and NaN
         """
-        # return the df if it is a series
+        # return the df if it is a series already
         if isinstance(df, Series):
             df.name = name
             return df.to_frame()
@@ -78,16 +78,30 @@ class ResolverToolkit(BaseResolver):
             query_array.append("lengthReport")
         return query_array
 
-    def get_meta_df(self) -> DataFrame | None:
+    def get_meta_df(self) -> DataFrame:
         """
-        There should be at least one cache data as this function is called
+        There should be at least one cache data as this function is called, if not, it gonna get income_statement
+        Get the meta dataframe or series e.g. yearReport and lengthReport ( quarter )
         """
         for Param in ParamLocation:
-            df: DataFrame | None = self.cache.get(Param.name, None)
-            if df is not None:
-                query_array = self.get_meta_query()
+            # not using market price dataframe as base for meta data
+            if Param == ParamLocation.market_price:
+                continue
 
-                df = df[query_array]
-                break
+            df: DataFrame | None = self.cache.get(Param.name, None)
+
+            # continue if no cache
+            if df is None:
+                continue
+
+            query_array = self.get_meta_query()
+
+            df = df[query_array]
+            break
+
+        # if none of the data was cached, do regression
+        if df is None:
+            self.get_data(ParamLocation.balance_sheet)
+            df = self.get_meta_df()
 
         return df

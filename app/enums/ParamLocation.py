@@ -10,3 +10,4 @@ class ParamLocation(int, Enum):
     balance_sheet = 1
     income_statement = 2
     cash_flow = 3
+    market_price = 4
