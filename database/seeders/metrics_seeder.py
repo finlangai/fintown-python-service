@@ -11,6 +11,7 @@ from app.models import (
 )
 from app.enums import FormulaType
 from app.types import PeriodType
+from config import STOCK_SYMBOLS
 
 
 def main():
@@ -23,17 +24,14 @@ def main():
         )
     )
 
-    # companies = list(CompanyRepository().find_by(query={"symbol": "vnm"}))
-    companies = list(CompanyRepository().find_by(query={}))
-
     # init resolver
     resolver = FormularResolver(dropna=True)
     timelines = PeriodType.__args__
 
     # loop through each company
-    for c in companies:
-        print_pink_bold(f"=== {c.symbol.upper()}")
-        resolver.update_symbol(c.symbol)
+    for symbol in STOCK_SYMBOLS:
+        print_pink_bold(f"=== {symbol.upper()}")
+        resolver.update_symbol(symbol)
 
         # seed quarterly and yearly metrics records for each company
         for period in timelines:
@@ -52,7 +50,7 @@ def main():
             if period == "quarter":
                 records = [
                     MetricHistory(
-                        symbol=c.symbol.upper(),
+                        symbol=symbol.upper(),
                         year=index[0],
                         quarter=index[1],
                         metrics=row.to_dict(),
@@ -62,7 +60,7 @@ def main():
             else:
                 records = [
                     MetricHistory(
-                        symbol=c.symbol.upper(),
+                        symbol=symbol.upper(),
                         year=index,
                         metrics=row.to_dict(),
                     )
@@ -72,7 +70,7 @@ def main():
             MetricHistoryRepository().save_many(models=records)
             print(f"{len(metric_df)} {period}ly records")
 
-    print_green_bold(f"{len(companies)} companies seeded")
+    print_green_bold(f"{len(STOCK_SYMBOLS)} companies seeded")
 
 
 if __name__ == "__main__" or __name__ == "tasks":

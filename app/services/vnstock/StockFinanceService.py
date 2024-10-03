@@ -114,8 +114,11 @@ class StockFinanceService(BaseVnStockService):
             # take out required columns
             price_df = price_df[["close", "yearReport"]]
 
+        # convert to normal VND unit
+        price_df["close"] = price_df["close"] * 1000
+
         # rename column close to market price
-        price_df.rename(columns={"close": "closed_price"}, inplace=True)
+        price_df.rename(columns={"close": "Closed Price"}, inplace=True)
 
         meta_df = self.get_meta_df()
 

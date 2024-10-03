@@ -11,6 +11,8 @@ from database.seeders.formulars import (
     return_of_asset,
     return_of_capital_employed,
     return_of_equity,
+    price_to_book,
+    price_to_earnings,
 )
 from app.models import FormularRepository, Formular
 from app.utils import print_green_bold
@@ -22,14 +24,16 @@ def main():
         gross_profit_margin.get(1),
         net_profit_margin.get(2),
         earnings_per_share.get(3),
-        ev_to_ebit.get(4),
-        return_of_equity.get(5),
-        return_of_asset.get(6),
-        return_of_capital_employed.get(7),
-        quick_ratio.get(8),
-        asset_turnover.get(9),
-        capital_employed.get(10),
-        debt_to_equity.get(11),
+        price_to_earnings.get(4),
+        price_to_book.get(5),
+        ev_to_ebit.get(6),
+        return_of_equity.get(7),
+        return_of_asset.get(8),
+        return_of_capital_employed.get(9),
+        quick_ratio.get(10),
+        asset_turnover.get(11),
+        capital_employed.get(12),
+        debt_to_equity.get(13),
     ]
     for f in formulars:
         print_green_bold(f"=== {f.name}")

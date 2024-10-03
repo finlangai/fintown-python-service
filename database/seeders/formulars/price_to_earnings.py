@@ -2,24 +2,23 @@ from app.models import Expression, Formular, FormularMeta
 from app.enums import FormulaType
 
 from database.seeders.formulars.parameters import (
-    NetSales,
-    TotalAsset,
-    Sales,
-    SalesDeductions,
+    NetProfit,
+    OutstandingShare,
+    ClosedPrice,
+    MarketCap,
 )
 
 # === BASIC
 BASIC = Expression(
     name="Basic",
-    expression=f"{{{NetSales.slug}}} / {{{TotalAsset.slug}}}",
-    parameters=[NetSales, TotalAsset],
+    expression=f"{{{ClosedPrice.slug}}} / ( {{{NetProfit.slug}}} / {{{OutstandingShare.slug}}} )",
+    parameters=[ClosedPrice, NetProfit, OutstandingShare],
 )
-# === SECONDARY
-SECONDARY = Expression(
-    name="Secondary",
-    expression=f"({{{Sales.slug}}} - {{{SalesDeductions.slug}}}) / {{{TotalAsset.slug}}}",
-    parameters=[Sales, SalesDeductions, TotalAsset],
-)
+# BASIC = Expression(
+#     name="Basic",
+#     expression=f"{{{MarketCap.slug}}} / {{{NetProfit.slug}}}",
+#     parameters=[MarketCap, NetProfit],
+# )
 
 
 def get(order: int):
@@ -27,14 +26,13 @@ def get(order: int):
         category=FormulaType.FINANCIAL_METRIC,
         is_percentage=False,
         order=order,
-        unit="vòng",
     )
     return Formular(
-        name="Asset Turnover",
-        name_vi="Vòng quay tài sản",
-        display_name="Vòng quay tài sản",
-        identifier="asset_turnover",
-        description="Asset Turnover (Vòng Quay Tài Sản) là chỉ số đo lường hiệu quả sử dụng tài sản của công ty để tạo ra doanh thu. Chỉ số này cho biết mỗi đồng tài sản giúp công ty tạo ra bao nhiêu đồng doanh thu, phản ánh khả năng tối ưu hóa tài sản trong việc sản xuất doanh thu.",
+        name="Price to Earnings",
+        name_vi="Tỷ lệ giá trên lợi nhuận",
+        display_name="P/E",
+        identifier="price_to_earnings",
+        description="P/E (Price to Earnings), hay Tỷ Lệ Giá trên Lợi Nhuận, là chỉ số đo lường mối quan hệ giữa giá thị trường của cổ phiếu và lợi nhuận trên mỗi cổ phiếu (EPS). Chỉ số này cho biết nhà đầu tư đang trả bao nhiêu cho mỗi đồng lợi nhuận mà công ty tạo ra, phản ánh mức độ định giá của cổ phiếu và kỳ vọng tăng trưởng lợi nhuận trong tương lai.",
         metadata=meta,
-        library=[BASIC, SECONDARY],
+        library=[BASIC],
     )
