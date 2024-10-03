@@ -15,7 +15,8 @@ class CompanyDelta(BaseModel):
 
 
 class Summary(BaseModel):
-    company_profile: Optional[str]
+    overview: Optional[str]
+    # company_profile: Optional[str]
     history_dev: Optional[str]
     company_promise: Optional[str]
     business_risk: Optional[str]
