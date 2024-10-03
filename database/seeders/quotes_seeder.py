@@ -36,11 +36,19 @@ def main():
                 interval=interval_name,
             )
 
+            # replace NaN with None
+            # quotes_df = quotes_df.replace(np.nan, None)
+
+            # drop row that are NaN
+            quotes_df.dropna(inplace=True)
+
             # convert time column to unix timestamp
             quotes_df["time"] = quotes_df["time"].apply(lambda x: int(x.timestamp()))
 
-            # replace NaN with None
-            quotes_df = quotes_df.replace(np.nan, None)
+            columns_to_multiply = ["open", "high", "low", "close"]
+            quotes_df[columns_to_multiply] = quotes_df[columns_to_multiply].apply(
+                lambda x: x * 1000
+            )
 
             # add interval column
             quotes_df.insert(loc=0, column="interval", value=interval_index.value)
