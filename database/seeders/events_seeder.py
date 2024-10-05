@@ -3,6 +3,8 @@ from app.services import StockInfoService
 from app.models import Event, EventRepository
 from config.seeder import STOCK_SYMBOLS
 
+import numpy as np
+
 
 def main():
     print_green_bold("=== SEEDING EVENTS")
@@ -16,6 +18,7 @@ def main():
 
         # get events dataframe of the company
         events_df = infoService.events()
+        events_df.replace({np.nan: None}, inplace=True)
 
         # add symbol column
         events_df.insert(0, "symbol", symbol)

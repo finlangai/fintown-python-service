@@ -17,7 +17,7 @@ class News(BaseModel):
     price: Optional[float]
     price_change: Optional[float]
     price_change_ratio: Optional[float]
-    price_change_ratio_1m: Optional[float]
+    # price_change_ratio_1m: Optional[float]
     publish_date: Optional[datetime]
 
     class Config:

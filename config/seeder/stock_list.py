@@ -1,6 +1,8 @@
 # TEST SYMBOLS
 # STOCK_SYMBOLS = ["vnm", "hpg", "vcb", "mbb", "ssi", "vci", "bvs", "pvi"]
 
+INDEX_SYMBOLS = ["VN30"]
+
 # VN30
 STOCK_SYMBOLS = [
     "ACB",

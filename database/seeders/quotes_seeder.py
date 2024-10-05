@@ -7,7 +7,7 @@ from app.models import StockQuote, StockQuoteRepository
 from app.services import StockQuoteService
 from app.enums import QuoteInterval
 from app.types import IntervalType
-from config.seeder import STOCK_SYMBOLS
+from config.seeder import STOCK_SYMBOLS, INDEX_SYMBOLS
 
 from datetime import datetime
 import numpy as np

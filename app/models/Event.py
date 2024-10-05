@@ -16,7 +16,7 @@ class Event(BaseModel):
     price: Optional[float]
     price_change: Optional[float]
     price_change_ratio: Optional[float]
-    price_change_ratio_1m: Optional[float]
+    # price_change_ratio_1m: Optional[float]
     event_name: Optional[str]
     event_code: Optional[str]
     event_desc: Optional[str]

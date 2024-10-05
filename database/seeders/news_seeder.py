@@ -3,6 +3,8 @@ from app.services import StockInfoService
 from app.models import News, NewsRepository
 from config.seeder import STOCK_SYMBOLS
 
+import numpy as np
+
 
 def main():
     print_green_bold("=== SEEDING EVENTS")
@@ -19,6 +21,7 @@ def main():
 
         # add symbol column
         news_df.insert(0, "symbol", symbol)
+        news_df.replace({np.nan: None}, inplace=True)
 
         # loop through each row in the dataframe and accumulate News model into events variable
         news: list[News] = []
