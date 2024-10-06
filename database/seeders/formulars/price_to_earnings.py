@@ -5,20 +5,20 @@ from database.seeders.formulars.parameters import (
     NetProfit,
     OutstandingShare,
     ClosedPrice,
-    MarketCap,
+    EarningsPerShareLTM,
 )
 
 # === BASIC
-BASIC = Expression(
-    name="Basic",
-    expression=f"{{{ClosedPrice.slug}}} / ( {{{NetProfit.slug}}} / {{{OutstandingShare.slug}}} )",
-    parameters=[ClosedPrice, NetProfit, OutstandingShare],
-)
 # BASIC = Expression(
 #     name="Basic",
-#     expression=f"{{{MarketCap.slug}}} / {{{NetProfit.slug}}}",
-#     parameters=[MarketCap, NetProfit],
+#     expression=f"{{{ClosedPrice.slug}}} / ( {{{NetProfit.slug}}} / {{{OutstandingShare.slug}}} )",
+#     parameters=[ClosedPrice, NetProfit, OutstandingShare],
 # )
+BASIC = Expression(
+    name="Basic",
+    expression=f"{{{ClosedPrice.slug}}} / {{{EarningsPerShareLTM.slug}}}",
+    parameters=[ClosedPrice, EarningsPerShareLTM],
+)
 
 
 def get(order: int):

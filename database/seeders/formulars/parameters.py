@@ -138,3 +138,8 @@ MarketCap = Parameter(
 ClosedPrice = Parameter(
     field="Closed Price", slug="closed_price", location=ParamLocation.market_price
 )
+
+# ===== LTM
+EarningsPerShareLTM = Parameter(
+    field="EPS LTM", slug="eps_ltm", location=ParamLocation.last_twelve_months
+)

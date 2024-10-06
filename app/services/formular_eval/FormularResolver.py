@@ -1,5 +1,5 @@
 from app.services.formular_eval import ResolverToolkit
-from app.models import Formular
+from app.models import Formular, FormularRepository
 import pandas as pd
 
 
@@ -30,3 +30,20 @@ class FormularResolver(ResolverToolkit):
 
         # If any formular capable of calculating the metric, return the result, if not, left None
         return locals().get("result", None)
+
+    def last_twelve_months(self) -> pd.DataFrame:
+        eps_formular = FormularRepository().find_one_by(
+            {"identifier": "earnings_per_share"}
+        )
+
+        eps_df = self.appraise(eps_formular)
+        # reverse the order to calculate
+        eps_df = eps_df.iloc[::-1]
+
+        eps_ltm = eps_df.rolling(window=4, min_periods=1).sum()
+
+        # reverse into the right order
+        eps_ltm = eps_ltm.iloc[::-1]
+        eps_ltm.name = "EPS LTM"
+
+        return eps_ltm.to_frame()

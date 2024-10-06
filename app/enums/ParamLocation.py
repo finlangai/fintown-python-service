@@ -11,3 +11,4 @@ class ParamLocation(int, Enum):
     income_statement = 2
     cash_flow = 3
     market_price = 4
+    last_twelve_months = 5
