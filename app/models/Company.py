@@ -8,6 +8,13 @@ from bson import ObjectId
 from core.mongodb import get_database
 
 
+class CompanyMovingAverage(BaseModel):
+    week_52: Optional[float]
+    day_200: Optional[float]
+    day_150: Optional[float]
+    day_24: Optional[float]
+
+
 class CompanyDelta(BaseModel):
     delta_in_week: Optional[float]
     delta_in_month: Optional[float]
@@ -52,6 +59,7 @@ class Company(BaseModel):
     company_name: str
     industry: str
     logo: Optional[str] = None
+    fluctuation: Optional[CompanyMovingAverage] = None
     delta: CompanyDelta
     profile: Profile
     summary: Summary

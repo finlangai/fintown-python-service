@@ -13,7 +13,7 @@ from database.seeders.formulars.parameters import (
 # === BASIC
 BASIC = Expression(
     name="Basic",
-    expression=f"({{{MarketCap.slug}}} + {{{ShortTermBorrowings.slug}}} + {{{LongTermBorrowings.slug}}} - {{{CashAndCashEquivalents.slug}}}) / ({{{ProfitBeforeTax.slug}}} - {{{InterestExpenses.slug}}})",
+    expression=f"({{{MarketCap.slug}}} + {{{ShortTermBorrowings.slug}}} + {{{LongTermBorrowings.slug}}} - {{{CashAndCashEquivalents.slug}}}) / ({{{ProfitBeforeTax.slug}}} + {{{InterestExpenses.slug}}})",
     parameters=[
         MarketCap,
         CashAndCashEquivalents,

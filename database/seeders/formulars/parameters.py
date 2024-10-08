@@ -116,7 +116,7 @@ InterestExpenses = Parameter(
     field="Interest Expenses",
     slug="interest_expenses",
     location=ParamLocation.income_statement,
-    is_allow_negative=False,
+    is_allow_negative=True,
 )
 
 # ===== CASHFLOW STATEMENT

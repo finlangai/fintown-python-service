@@ -20,12 +20,22 @@ class MetricHistory(BaseModel):
     def set_id(cls, v):
         return str(v) if isinstance(v, ObjectId) else v
 
+    # @field_validator("metrics", mode="before")
+    # def remove_none_and_nan_values(cls, metrics):
+    #     return {
+    #         key: value
+    #         for key, value in metrics.items()
+    #         # old:  if value is not None and not isinstance(value, float) or not math.isnan(value)
+    #         if value is not None
+    #         and not isinstance(value, float)
+    #         or not math.isnan(value)
+    #     }
+
     @field_validator("metrics", mode="before")
-    def remove_none_and_nan_values(cls, metrics):
+    def replace_nan_with_none(cls, metrics):
         return {
-            k: v
-            for k, v in metrics.items()
-            if v is not None and not isinstance(v, float) or not math.isnan(v)
+            key: (None if isinstance(value, float) and math.isnan(value) else value)
+            for key, value in metrics.items()
         }
 
     class Config:
