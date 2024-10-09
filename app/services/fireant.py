@@ -1,9 +1,10 @@
-from config.fireant_endpoints import (
+from config.fireant import (
     ENDPOINT_DIVIDENDS,
     ENDPOINT_FINANCIAL_STATEMENT,
     ENDPOINT_FUNDAMENTAL,
     ENDPOINT_HOLDERS,
     ENDPOINT_PROFILE,
+    ENDPOINT_OFFICERS,
 )
 from app.utils import fetch_url
 
@@ -49,7 +50,6 @@ def get_financial_statement(
     quarter: int = 4,
     year: int = datetime.now().year,
 ):
-
     url = ENDPOINT_FINANCIAL_STATEMENT.format(symbol)
     params = {
         "type": type.value,
@@ -76,4 +76,10 @@ def get_profile(symbol: str):
 # === GET HOLDERS
 def get_fundamental(symbol: str):
     url = ENDPOINT_FUNDAMENTAL.format(symbol)
+    return fetch_url(url)
+
+
+# === GET OFFICERS
+def get_officers(symbol: str):
+    url = ENDPOINT_OFFICERS.format(symbol)
     return fetch_url(url)

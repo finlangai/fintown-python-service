@@ -1,5 +1,5 @@
 from .seeder.config import *
-from .fireant_endpoints import *
+from .fireant import *
 from .llm import *
 from .seeder import *
 from .firebase import *

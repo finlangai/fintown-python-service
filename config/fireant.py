@@ -1,4 +1,9 @@
-# === FIREANT API ENDPOINTS
+# placeholder: id
+INDIVIDUAL_AVATAR_URL = (
+    "https://static.fireant.vn/individuals/photo/{id}?width=100&height=100"
+)
+
+# ===== FIREANT API ENDPOINTS
 
 # placeholder: symbol
 ENDPOINT_FUNDAMENTAL = "https://restv2.fireant.vn/symbols/{}/fundamental"
@@ -19,3 +24,6 @@ ENDPOINT_HOLDERS = "https://restv2.fireant.vn/symbols/{}/holders"
 
 # placeholder: symbol
 ENDPOINT_PROFILE = "https://restv2.fireant.vn/symbols/{}/profile"
+
+# placeholder: symbol
+ENDPOINT_OFFICERS = "https://restv2.fireant.vn/symbols/{}/officers"

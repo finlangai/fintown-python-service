@@ -14,3 +14,5 @@ from .database_seeder import *
 from .logos_seeder import *
 from .quotes_seeder import *
 from .fluctuation_seeder import *
+from .officers_seeder import *
+from .positions_seeder import *

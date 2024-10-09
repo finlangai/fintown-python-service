@@ -17,7 +17,7 @@ def main():
     symbol_list: list[dict] = mongodb.query_with_projection(
         CompanyRepository.Meta.collection_name,
         {
-            "logo": {"$exists": False}
+            # "logo": {"$exists": False}
         },  # Filter to get documents without the 'logo' field
         {"_id": 0, "symbol": 1},  # Projection to include only the 'symbol' field
     )
