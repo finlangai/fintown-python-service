@@ -13,3 +13,4 @@ from .Subsidiary import *
 from .StockQuote import *
 from .Position import *
 from .Officer import *
+from .Transaction import *
