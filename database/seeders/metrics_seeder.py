@@ -29,6 +29,7 @@ def main():
     timelines = PeriodType.__args__
 
     # loop through each company
+    # for symbol in ["VNM"]:
     for symbol in STOCK_SYMBOLS:
         print_pink_bold(f"=== {symbol.upper()}")
         resolver.update_symbol(symbol)

@@ -28,3 +28,6 @@ class StockInfoService(BaseVnStockService):
     def news(self) -> DataFrame:
         # return self.first_row_to_dict(self.company.news())
         return self.company.news()
+
+    def dividends(self) -> DataFrame:
+        return self.company.dividends()

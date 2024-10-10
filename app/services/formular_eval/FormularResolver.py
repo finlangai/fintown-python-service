@@ -1,5 +1,6 @@
 from app.services.formular_eval import ResolverToolkit
 from app.models import Formular, FormularRepository
+from app.enums import ParamLocation
 import pandas as pd
 
 
@@ -47,3 +48,26 @@ class FormularResolver(ResolverToolkit):
         eps_ltm.name = "EPS LTM"
 
         return eps_ltm.to_frame()
+
+    def average(self) -> pd.DataFrame:
+        average_df = pd.DataFrame()
+
+        balance_df = self.get_data(ParamLocation.balance_sheet)
+        if "Inventories, Net (Bn. VND)" in balance_df:
+            inventories = balance_df["Inventories, Net (Bn. VND)"]
+
+            # reverse to calculate with rolling sum
+            inventories = inventories.iloc[::-1]
+
+            # calculate rolling sum and then divide by the window size to get the average
+            avg_inventories = inventories.rolling(window=2, min_periods=1).sum() / 2
+
+            # reverse back to the right order
+            avg_inventories = avg_inventories.iloc[::-1]
+
+            # handle the last row separately
+            avg_inventories.iloc[-1] = inventories.iloc[0]
+
+            # Set Average Inventories column
+            average_df["Average Inventories"] = avg_inventories
+        return average_df

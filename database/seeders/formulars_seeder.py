@@ -13,6 +13,9 @@ from database.seeders.formulars import (
     return_of_equity,
     price_to_book,
     price_to_earnings,
+    current_ratio,
+    inventory_turnover,
+    return_on_sales,
 )
 from app.models import FormularRepository, Formular
 from app.utils import print_green_bold
@@ -29,9 +32,12 @@ def main():
         ev_to_ebit,
         return_of_equity,
         return_of_asset,
+        return_on_sales,
         return_of_capital_employed,
+        current_ratio,
         quick_ratio,
         asset_turnover,
+        inventory_turnover,
         capital_employed,
         debt_to_equity,
     ]

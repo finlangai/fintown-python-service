@@ -80,6 +80,12 @@ TotalOperatingRevenue = Parameter(
     location=ParamLocation.income_statement,
 )
 
+OperatingProfitLoss = Parameter(
+    field="Operating Profit/Loss",
+    slug="operating_profit_loss",
+    location=ParamLocation.income_statement,
+)
+
 GrossProfit = Parameter(
     field="Gross Profit",
     slug="gross_profit",
@@ -142,4 +148,11 @@ ClosedPrice = Parameter(
 # ===== LTM
 EarningsPerShareLTM = Parameter(
     field="EPS LTM", slug="eps_ltm", location=ParamLocation.last_twelve_months
+)
+
+# ===== Average Inventory
+AverageInventory = Parameter(
+    field="Average Inventories",
+    slug="average_inventories",
+    location=ParamLocation.average,
 )
