@@ -24,6 +24,7 @@ def get(order: int):
         order=order,
     )
     return Formular(
+        id=order,
         name="Price to Book",
         name_vi="Tỷ lệ giá trên giá trị sổ sách",
         display_name="P/B",

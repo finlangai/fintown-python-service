@@ -19,6 +19,7 @@ def get(order: int):
         unit="vòng",
     )
     return Formular(
+        id=order,
         category=FormulaType.FINANCIAL_METRIC,
         name="Inventory Turnover",
         name_vi="Vòng quay hàng tồn kho",

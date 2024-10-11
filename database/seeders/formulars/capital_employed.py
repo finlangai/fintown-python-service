@@ -20,6 +20,7 @@ def get(order: int):
         unit="tỷ đồng",
     )
     return Formular(
+        id=order,
         category=FormulaType.FINANCIAL_METRIC,
         name="Capital Employed",
         name_vi="Vốn được sử dụng",

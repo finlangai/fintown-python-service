@@ -18,6 +18,7 @@ def get(order: int):
         order=order,
     )
     return Formular(
+        id=order,
         category=FormulaType.FINANCIAL_METRIC,
         name="Debt to Equity",
         name_vi="Tỷ lệ nợ trên vốn chủ sở hữu",

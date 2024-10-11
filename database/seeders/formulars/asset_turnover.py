@@ -30,6 +30,7 @@ def get(order: int):
         unit="vòng",
     )
     return Formular(
+        id=order,
         name="Asset Turnover",
         name_vi="Vòng quay tài sản",
         display_name="Vòng quay tài sản",

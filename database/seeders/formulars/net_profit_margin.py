@@ -37,6 +37,7 @@ def get(order: int):
         unit=None,
     )
     return Formular(
+        id=order,
         category=FormulaType.FINANCIAL_METRIC,
         name="Net Profit Margin",
         name_vi="Biên lợi nhuận ròng",

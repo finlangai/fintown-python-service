@@ -6,7 +6,6 @@ from .StatementFormat import *
 from .Formular import *
 from .Expression import *
 from .MetricHistory import *
-from .Assessment import *
 from .Event import *
 from .News import *
 from .Subsidiary import *
@@ -14,3 +13,4 @@ from .StockQuote import *
 from .Position import *
 from .Officer import *
 from .Transaction import *
+from .Assessment import *

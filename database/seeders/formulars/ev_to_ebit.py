@@ -34,6 +34,7 @@ def get(order: int):
         unit=None,
     )
     return Formular(
+        id=order,
         category=FormulaType.FINANCIAL_METRIC,
         name="Enterprise Value to Earnings Before Interest and Taxes",
         name_vi="Tỷ lệ giá trị doanh nghiệp trên lợi nhuận trước lãi vay và thuế",

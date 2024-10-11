@@ -19,6 +19,7 @@ def get(order: int):
         unit=None,
     )
     return Formular(
+        id=order,
         category=FormulaType.FINANCIAL_METRIC,
         name="Current Ratio",
         name_vi="Hệ số thanh toán hiện hành",

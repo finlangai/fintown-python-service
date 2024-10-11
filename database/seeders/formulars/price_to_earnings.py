@@ -28,6 +28,7 @@ def get(order: int):
         order=order,
     )
     return Formular(
+        id=order,
         name="Price to Earnings",
         name_vi="Tỷ lệ giá trên lợi nhuận",
         display_name="P/E",

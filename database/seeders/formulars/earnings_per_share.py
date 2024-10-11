@@ -24,6 +24,7 @@ def get(order: int):
         unit="VNĐ/CP",
     )
     return Formular(
+        id=order,
         category=FormulaType.FINANCIAL_METRIC,
         name="Earnings Per Share",
         name_vi="Lợi nhuận trên mỗi cổ phiếu",

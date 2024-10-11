@@ -20,7 +20,7 @@ class FormularMeta(BaseModel):
 
 
 class Formular(BaseModel):
-    id: Optional[str] = Field(default=None, alias="_id")
+    id: Optional[int] = Field(default=None, alias="_id")
     name: str
     name_vi: str
     display_name: str

@@ -24,6 +24,7 @@ def get(order: int):
         unit=None,
     )
     return Formular(
+        id=order,
         category=FormulaType.FINANCIAL_METRIC,
         name="Return on Assets",
         name_vi="Tỷ lệ lợi nhuận trên tổng tài sản",

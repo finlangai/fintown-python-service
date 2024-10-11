@@ -23,6 +23,7 @@ def get(order: int):
         unit=None,
     )
     return Formular(
+        id=order,
         category=FormulaType.FINANCIAL_METRIC,
         name="Quick Ratio",
         name_vi="Hệ số thanh toán nhanh",

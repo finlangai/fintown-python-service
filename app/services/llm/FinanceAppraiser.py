@@ -1,5 +1,5 @@
 from .BaseLLMService import BaseLLMService
-from config.llm import base_prompt, llm_response_schema
+from config.llm import llm_response_schema
 
 import json
 from jsonschema import validate
@@ -18,14 +18,14 @@ class FinanceAppraiser(BaseLLMService):
             return None
         return data
 
-    def appraise(
-        self, symbol, name, industry, metric_info, metric_histories, forecast
-    ) -> dict[str, str]:
-        # Get a dictionary of local variables
-        local_vars = locals()
-        # Remove 'self' from the dictionary
-        local_vars.pop("self")
-        # Format the base_prompt with the remaining local variables
-        prompt = base_prompt.format(**local_vars)
+    # def appraise(
+    #     self, symbol, name, industry, metric_info, metric_histories, forecast
+    # ) -> dict[str, str]:
+    #     # Get a dictionary of local variables
+    #     local_vars = locals()
+    #     # Remove 'self' from the dictionary
+    #     local_vars.pop("self")
+    #     # Format the base_prompt with the remaining local variables
+    #     prompt = base_prompt.format(**local_vars)
 
-        return self.invoke(prompt)
+    #     return self.invoke(prompt)
