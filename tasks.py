@@ -27,3 +27,22 @@ def seed(c, name):
     print_green_bold(
         f"{name} seeder done in {round(time.time() - start_time, 2)} seconds （＾∀＾●）ﾉｼ"
     )
+
+
+@task
+def recal(c):
+    from core import mongodb
+
+    # delete formulars
+    print_green_bold("=== deleting formulars")
+    mongodb.delete_many("formular_library", {})
+    # delete metrics
+    print_green_bold("=== deleting metrics")
+    mongodb.delete_many("metric_records", {})
+
+    from database.seeders import formulars_seeder, metrics_seeder
+
+    print_green_bold("=== seeding formulars")
+    formulars_seeder.main()
+    print_green_bold("=== seeding metrics")
+    metrics_seeder.main()

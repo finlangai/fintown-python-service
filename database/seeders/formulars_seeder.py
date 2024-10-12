@@ -17,6 +17,7 @@ from database.seeders.formulars import (
     inventory_turnover,
     return_on_sales,
     weighted_average_cost_of_capital,
+    cash_ratio,
 )
 from app.models import FormularRepository, Formular
 from app.utils import print_green_bold
@@ -38,6 +39,7 @@ def main():
         return_of_capital_employed,
         current_ratio,
         quick_ratio,
+        cash_ratio,
         asset_turnover,
         inventory_turnover,
         capital_employed,
