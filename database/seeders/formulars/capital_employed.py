@@ -17,7 +17,7 @@ def get(order: int):
         is_percentage=False,
         is_should_divine_by_billion=True,
         order=order,
-        unit="tỷ đồng",
+        unit="Tỷ đồng",
     )
     return Formular(
         id=order,

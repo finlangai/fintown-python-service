@@ -26,7 +26,6 @@ Tc = f"( {{{TaxForTheYear.slug}}} / {{{ProfitBeforeTax.slug}}} * 100 )"
 # Cost of equity, using Earnings Capitalization Ratio or Earnings Yield for alternative
 Re = f"( {{{EarningsPerShareLTM.slug}}} / {{{ClosedPrice.slug}}} )"
 
-# ( E / (E + D) )
 basic_first_part = f"( {E} / ( {E} + {D} ) ) +  {Re}"
 basic_second_part = f"( {D} / ( {E} + {D} ) ) * {Rd}"
 basic_third_part = f"( 1 - {Tc} )"

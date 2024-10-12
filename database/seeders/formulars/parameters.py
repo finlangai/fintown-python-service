@@ -139,6 +139,23 @@ TaxForTheYear = Parameter(
 )
 
 # ===== CASHFLOW STATEMENT
+DepreciationAndAmortisation = Parameter(
+    field="Depreciation and Amortisation",
+    slug="depreciation_and_amortisation",
+    location=ParamLocation.cash_flow,
+)
+
+PurchaseOfFixedAssets = Parameter(
+    field="Purchase of fixed assets",
+    slug="purchase_of_fixed_assets",
+    location=ParamLocation.cash_flow,
+    is_allow_negative=False,
+)
+NetCashFlowFromOperatingActivities = Parameter(
+    field="Net cash inflows/outflows from operating activities",
+    slug="net_cash_inflows_outflows_from_operating_activities",
+    location=ParamLocation.cash_flow,
+)
 
 # ===== RATIO
 OutstandingShare = Parameter(

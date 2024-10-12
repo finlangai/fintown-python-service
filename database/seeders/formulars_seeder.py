@@ -18,6 +18,7 @@ from database.seeders.formulars import (
     return_on_sales,
     weighted_average_cost_of_capital,
     cash_ratio,
+    free_cash_flow,
 )
 from app.models import FormularRepository, Formular
 from app.utils import print_green_bold
@@ -26,11 +27,14 @@ from app.utils import print_green_bold
 def main():
     # Change the order of module to change the order
     formulars = [
-        gross_profit_margin,
-        net_profit_margin,
+        free_cash_flow,
+        capital_employed,
+        debt_to_equity,
         earnings_per_share,
         price_to_earnings,
         price_to_book,
+        gross_profit_margin,
+        net_profit_margin,
         ev_to_ebit,
         weighted_average_cost_of_capital,
         return_of_equity,
@@ -42,8 +46,6 @@ def main():
         cash_ratio,
         asset_turnover,
         inventory_turnover,
-        capital_employed,
-        debt_to_equity,
     ]
     formulars = [
         formular_module.get(index + 1)

@@ -1,6 +1,6 @@
 from invoke import task
 import time
-from app.utils import print_green_bold
+from app.utils import print_green_bold, print_pink_bold
 import warnings
 
 # Ignore all warnings
@@ -34,10 +34,10 @@ def recal(c):
     from core import mongodb
 
     # delete formulars
-    print_green_bold("=== deleting formulars")
+    print_pink_bold("=== deleting formulars")
     mongodb.delete_many("formular_library", {})
     # delete metrics
-    print_green_bold("=== deleting metrics")
+    print_pink_bold("=== deleting metrics")
     mongodb.delete_many("metric_records", {})
 
     from database.seeders import formulars_seeder, metrics_seeder
