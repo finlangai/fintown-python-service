@@ -7,19 +7,19 @@ from database.seeders.formulars.parameters import (
     ShortTermBorrowings,
     LongTermBorrowings,
     ProfitBeforeTax,
-    InterestExpenses,
     OperatingProfitLoss,
+    Liabilities,
 )
 
 # === BASIC
 BASIC = Expression(
     name="Basic",
     # expression=f"({{{MarketCap.slug}}} + {{{ShortTermBorrowings.slug}}} + {{{LongTermBorrowings.slug}}} - {{{CashAndCashEquivalents.slug}}}) / ({{{ProfitBeforeTax.slug}}} + {{{InterestExpenses.slug}}})",
-    expression=f"({{{MarketCap.slug}}} + {{{ShortTermBorrowings.slug}}} + {{{LongTermBorrowings.slug}}} - {{{CashAndCashEquivalents.slug}}}) / {{{OperatingProfitLoss.slug}}}",
+    # expression=f"({{{MarketCap.slug}}} + {{{ShortTermBorrowings.slug}}} + {{{LongTermBorrowings.slug}}} - {{{CashAndCashEquivalents.slug}}}) / {{{OperatingProfitLoss.slug}}}",
+    expression=f"({{{MarketCap.slug}}} + {{{Liabilities.slug}}} - {{{CashAndCashEquivalents.slug}}}) / {{{OperatingProfitLoss.slug}}}",
     parameters=[
         MarketCap,
-        ShortTermBorrowings,
-        LongTermBorrowings,
+        Liabilities,
         CashAndCashEquivalents,
         OperatingProfitLoss,
     ],

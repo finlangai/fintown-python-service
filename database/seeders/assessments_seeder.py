@@ -7,6 +7,7 @@ from app.utils import (
     print_green_bold,
     text_to_red,
     text_to_italic,
+    text_to_blue,
 )
 from app.services import LinearRegressionForecaster, BaseLLMService
 from app.enums import FormulaType
@@ -80,6 +81,8 @@ def main():
             if column_name not in required_metrics_identifiers:
                 metrics_df.drop(column_name, axis=1, inplace=True)
 
+        # round to two digit
+        metrics_df = metrics_df.round(2)
         # ======================================================
         # ===== FORECAST 5 YEARS FOR ALL REQUIRED METRICS ======
         # ======================================================
@@ -100,6 +103,8 @@ def main():
 
             forecasted_df = pd.concat([forecasted_df, forecasted], axis=1)
 
+        # round to two digit
+        forecasted_df = forecasted_df.round(2)
         # ===================================================
         # ======= ASSESSMENT & STATUS FOR EACH GROUP ========
         # ===================================================
@@ -218,6 +223,7 @@ def main():
         forecasted_list = forecasted_df.apply(
             lambda row: {"year": row.name, "metrics": row.to_dict()}, axis=1
         ).tolist()
+        # calculate the future delta for each metrics
         deltas: dict[str, float] = {}
         for identifier in forecasted_df.columns:
             inital = metrics_df.iloc[-1][identifier]
@@ -231,6 +237,7 @@ def main():
             future_deltas=deltas,
             insights=insights,
         )
+        # save the record
         assessmentRepo.save(final_model)
 
 

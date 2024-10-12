@@ -31,6 +31,12 @@ CurrentLiabilities = Parameter(
     location=ParamLocation.balance_sheet,
 )
 
+LongTermLiabilities = Parameter(
+    field="Long-term liabilities (Bn. VND)",
+    slug="long_term_liabilities_bn_vnd",
+    location=ParamLocation.balance_sheet,
+)
+
 NetInventories = Parameter(
     field="Net Inventories",
     slug="net_inventories",
@@ -122,7 +128,14 @@ InterestExpenses = Parameter(
     field="Interest Expenses",
     slug="interest_expenses",
     location=ParamLocation.income_statement,
-    is_allow_negative=True,
+    is_allow_negative=False,
+)
+
+TaxForTheYear = Parameter(
+    field="Tax For the Year",
+    slug="tax_for_the_year",
+    location=ParamLocation.income_statement,
+    is_allow_negative=False,
 )
 
 # ===== CASHFLOW STATEMENT
