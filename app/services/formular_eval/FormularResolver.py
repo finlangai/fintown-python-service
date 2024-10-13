@@ -77,17 +77,19 @@ class FormularResolver(ResolverToolkit):
             Revenue,
             NetProfit,
             GrossProfit,
+            TotalAsset,
+            OwnerEquity,
         )
 
         previous_df = pd.DataFrame()
 
-        income_df = self.get_data(ParamLocation.income_statement)
-        income_columns = [Revenue, NetProfit, GrossProfit]
+        columns = [Revenue, NetProfit, GrossProfit, TotalAsset, OwnerEquity]
 
-        for param in income_columns:
-            if param.field in income_df:
+        for param in columns:
+            location_df = self.get_data(param.location)
+            if param.field in location_df:
                 previous_df[param.field + " Previous"] = self.choose_best_column(
-                    df=income_df[param.field], name=param.slug
+                    df=location_df[param.field], name=param.slug
                 )
 
         # return the Dataframe while shifting up by one row, which make each row the previous period

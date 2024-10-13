@@ -211,3 +211,15 @@ GrossProfitPrevious = Parameter(
     slug="gross_profit_previous",
     location=ParamLocation.previous,
 )
+
+TotalAssetPrevious = Parameter(
+    field="TOTAL ASSETS (Bn. VND) Previous",
+    slug="total_assets_bn_vnd_previous",
+    location=ParamLocation.previous,
+)
+
+OwnerEquityPrevious = Parameter(
+    field="OWNER'S EQUITY(Bn.VND) Previous",
+    slug="owner_s_equity_bn_vnd_previous",
+    location=ParamLocation.previous,
+)
