@@ -3,7 +3,15 @@ solvency_criteria = {
     "slug": "solvency",
     "groups": [
         {
-            "cluster_name": "Rủi ro thanh toán các khoản nợ",
+            "cluster_name": "Khả năng thanh khoản",
+            "metrics": [
+                "quick_ratio",
+                "debt_to_equity",
+                "asset_turnover",
+            ],
+        },
+        {
+            "cluster_name": "Khả năng năng thanh toán nợ",
             "metrics": [
                 "quick_ratio",
                 "debt_to_equity",

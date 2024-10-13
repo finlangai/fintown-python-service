@@ -14,6 +14,9 @@ profitability_criteria = {
             "cluster_name": "Biên lợi nhuận",
             "metrics": ["gross_profit_margin", "net_profit_margin"],
         },
-        {"cluster_name": "Lợi nhuận trên mỗi phiếu", "metrics": ["earnings_per_share"]},
+        {
+            "cluster_name": "Tăng trưởng hiệu suất lợi nhuận",
+            "metrics": ["earnings_per_share", "return_on_sales"],
+        },
     ],
 }

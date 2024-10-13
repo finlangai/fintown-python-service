@@ -19,6 +19,8 @@ from database.seeders.formulars import (
     weighted_average_cost_of_capital,
     cash_ratio,
     free_cash_flow,
+    interest_coverage_ratio,
+    debt_to_assets_ratio,
 )
 from app.models import FormularRepository, Formular
 from app.utils import print_green_bold
@@ -44,6 +46,8 @@ def main():
         current_ratio,
         quick_ratio,
         cash_ratio,
+        interest_coverage_ratio,
+        debt_to_assets_ratio,
         asset_turnover,
         inventory_turnover,
     ]
