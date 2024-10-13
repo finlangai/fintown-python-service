@@ -27,7 +27,9 @@ class Insights(BaseModel):
     overall: str
     profitability: Criteria
     solvency: Criteria
-    valuation: Criteria
+    revenue_profit: Criteria
+    assets_cashflow: Criteria
+    assets_equity: Criteria
 
 
 class Forecasted(BaseModel):

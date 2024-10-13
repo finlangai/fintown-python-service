@@ -16,6 +16,7 @@ class FormularMeta(BaseModel):
     # group: Optional[int] = None
     is_percentage: bool = False
     is_should_divine_by_billion: bool = False
+    is_viewable: bool = True
     unit: Optional[str] = None
 
 

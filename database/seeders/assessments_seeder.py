@@ -111,7 +111,9 @@ def main():
         # storing result
         criterias_holder: list[Criteria] = []
 
+        print(text_to_blue(f"====== APPRAISING CRITERIAS ======"))
         for criteria in criterias:
+            print(f"=== Criteria {criteria['criteria_name']}")
             groups: list = criteria["groups"]
             clusters_holder: list[Cluster] = []
             # ===========================================================
@@ -119,6 +121,7 @@ def main():
             # ===========================================================
             # loop through each cluster
             for cluster in groups:
+                print(f"- group {cluster['cluster_name']}")
                 metrics_data = ""
                 cluster_metric_identifiers = []
                 # map the metrics data for prompting
@@ -218,8 +221,11 @@ def main():
             overall=overall_assessment,
             profitability=criterias_holder[0],
             solvency=criterias_holder[1],
-            valuation=criterias_holder[2],
+            revenue_profit=criterias_holder[2],
+            assets_cashflow=criterias_holder[3],
+            assets_equity=criterias_holder[4],
         )
+
         forecasted_list = forecasted_df.apply(
             lambda row: {"year": row.name, "metrics": row.to_dict()}, axis=1
         ).tolist()

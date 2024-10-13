@@ -21,6 +21,7 @@ def get(order: int):
         is_percentage=False,
         unit="Tỷ đồng",
         is_should_divine_by_billion=True,
+        is_viewable=False,
     )
     return Formular(
         id=order,

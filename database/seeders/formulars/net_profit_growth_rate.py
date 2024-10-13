@@ -17,6 +17,7 @@ def get(order: int):
         order=order,
         is_percentage=True,
         unit=None,
+        is_viewable=False,
     )
     return Formular(
         id=order,

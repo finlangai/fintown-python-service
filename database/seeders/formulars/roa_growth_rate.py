@@ -20,11 +20,12 @@ def get(order: int):
         order=order,
         is_percentage=True,
         unit=None,
+        is_viewable=False,
     )
     return Formular(
         id=order,
         category=FormulaType.FINANCIAL_METRIC,
-        name="FCF Growth Rate",
+        name="ROA Growth Rate",
         name_vi="Tăng trưởng tỷ lệ lợi nhuận trên tài sản",
         display_name="Tăng trưởng ROA",
         identifier="return_of_assets_growth_rate",

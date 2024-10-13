@@ -1,5 +1,15 @@
-from .profitability import profitability_criteria
-from .solvency import solvency_criteria
-from .valuation import valuation_criteria
+from . import (
+    profitability_criteria,
+    solvency_criteria,
+    revenue_profit_criteria,
+    assets_cashflow_criteria,
+    assets_equity_criteria,
+)
 
-criterias = [profitability_criteria, solvency_criteria, valuation_criteria]
+criterias = [
+    profitability_criteria,
+    solvency_criteria,
+    revenue_profit_criteria,
+    assets_cashflow_criteria,
+    assets_equity_criteria,
+]

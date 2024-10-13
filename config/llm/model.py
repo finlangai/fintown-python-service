@@ -1,5 +1,5 @@
 MODEL_NAME = "llama-3.1-70b-versatile"
 TEMPERATURE = 0
-MAX_TOKENS = 336
+MAX_TOKENS = None
 TIMEOUT = None
 MAX_RETRIES = 2
