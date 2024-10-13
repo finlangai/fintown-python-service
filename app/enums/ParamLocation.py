@@ -13,6 +13,6 @@ class ParamLocation(int, Enum):
     cash_flow = 3
     market_price = 4
     # In FormularResolver
-    last_twelve_months = 5
+    metrics = 5
     average = 6
     previous = 7

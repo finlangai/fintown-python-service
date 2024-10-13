@@ -23,7 +23,7 @@ def get(order: int):
         category=FormulaType.FINANCIAL_METRIC,
         name="Gross Profit Growth Rate",
         name_vi="Tỷ lệ tăng trưởng lợi nhuận gộp",
-        display_name="Tỷ lệ tăng trưởng lợi nhuận gộp",
+        display_name="Tăng trưởng lợi nhuận gộp",
         identifier="gross_profit_growth_rate",
         description="Gross Profit Growth Rate (Tỷ Lệ Tăng Trưởng Lợi Nhuận Gộp) là chỉ số đo lường mức độ thay đổi của lợi nhuận gộp của công ty trong một khoảng thời gian nhất định. Chỉ số này cho biết lợi nhuận gộp đã tăng hoặc giảm bao nhiêu phần trăm so với kỳ trước, phản ánh khả năng kiểm soát chi phí sản xuất và doanh thu từ hoạt động kinh doanh.",
         metadata=meta,

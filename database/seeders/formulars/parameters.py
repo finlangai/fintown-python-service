@@ -181,9 +181,26 @@ ClosedPrice = Parameter(
     field="Closed Price", slug="closed_price", location=ParamLocation.market_price
 )
 
-# ===== LTM
+# ===== METRICS
 EarningsPerShareLTM = Parameter(
-    field="EPS LTM", slug="eps_ltm", location=ParamLocation.last_twelve_months
+    field="EPS LTM", slug="eps_ltm", location=ParamLocation.metrics
+)
+EBITDA = Parameter(
+    field="Earnings Before Interest, Taxes, Depreciation, and Amortization",
+    slug="earnings_before_interest_taxes_depreciation_and_amortization",
+    location=ParamLocation.metrics,
+)
+
+FreeCashFlow = Parameter(
+    field="Free Cash Flow",
+    slug="free_cash_flow",
+    location=ParamLocation.metrics,
+)
+
+ReturnOnAssets = Parameter(
+    field="Return on Assets",
+    slug="return_on_assets",
+    location=ParamLocation.metrics,
 )
 
 # ===== Average
@@ -221,5 +238,26 @@ TotalAssetPrevious = Parameter(
 OwnerEquityPrevious = Parameter(
     field="OWNER'S EQUITY(Bn.VND) Previous",
     slug="owner_s_equity_bn_vnd_previous",
+    location=ParamLocation.previous,
+)
+EarningsPerShareLTMPrevious = Parameter(
+    field="EPS LTM Previous", slug="eps_ltm_previous", location=ParamLocation.metrics
+)
+
+EBITDAPrevious = Parameter(
+    field="Earnings Before Interest, Taxes, Depreciation, and Amortization Previous",
+    slug="earnings_before_interest_taxes_depreciation_and_amortization_previous",
+    location=ParamLocation.previous,
+)
+
+FreeCashFlowPrevious = Parameter(
+    field="Free Cash Flow Previous",
+    slug="free_cash_flow_previous",
+    location=ParamLocation.previous,
+)
+
+ReturnOnAssetsPrevious = Parameter(
+    field="Return on Assets Previous",
+    slug="return_on_assets_previous",
     location=ParamLocation.previous,
 )

@@ -22,11 +22,15 @@ from database.seeders.formulars import (
     interest_coverage_ratio,
     debt_to_assets_ratio,
     revenue_growth_rate,
+    ebitda,
     net_profit_growth_rate,
     gross_profit_growth_rate,
-    ebitda,
     assets_growth_rate,
     equity_growth_rate,
+    ebitda_growth_rate,
+    eps_growth_rate,
+    fcf_growth_rate,
+    roa_growth_rate,
 )
 from app.models import FormularRepository, Formular
 from app.utils import print_green_bold
@@ -62,6 +66,10 @@ def main():
         gross_profit_growth_rate,
         assets_growth_rate,
         equity_growth_rate,
+        ebitda_growth_rate,
+        eps_growth_rate,
+        fcf_growth_rate,
+        roa_growth_rate,
     ]
     formulars = [
         formular_module.get(index + 1)

@@ -32,7 +32,10 @@ class FormularResolver(ResolverToolkit):
         # If any formular capable of calculating the metric, return the result, if not, left None
         return locals().get("result", None)
 
-    def last_twelve_months(self) -> pd.DataFrame:
+    def metrics(self) -> pd.DataFrame:
+        metrics_df = pd.DataFrame()
+
+        # calculate EPS LTM
         eps_formular = FormularRepository().find_one_by(
             {"identifier": "earnings_per_share"}
         )
@@ -47,7 +50,23 @@ class FormularResolver(ResolverToolkit):
         eps_ltm = eps_ltm.iloc[::-1]
         eps_ltm.name = "EPS LTM"
 
-        return eps_ltm.to_frame()
+        # === calculate regular metrics
+        from config.formular_resolver import METRICS_LOCATION_IDENTIFIERS
+
+        formular_identifers = METRICS_LOCATION_IDENTIFIERS
+        required_formulars = list(
+            FormularRepository().find_by({"identifier": {"$in": formular_identifers}})
+        )
+        for formular in required_formulars:
+            metric_series = self.appraise(formular)
+            if metric_series is None:
+                continue
+            metric_series.rename(f"{formular.name}", inplace=True)
+            metrics_df = pd.concat([metrics_df, metric_series.to_frame()], axis=1)
+
+        metrics_df = pd.concat([metrics_df, eps_ltm.to_frame()], axis=1)
+
+        return metrics_df
 
     def average(self) -> pd.DataFrame:
         average_df = pd.DataFrame()
@@ -88,9 +107,17 @@ class FormularResolver(ResolverToolkit):
         for param in columns:
             location_df = self.get_data(param.location)
             if param.field in location_df:
-                previous_df[param.field + " Previous"] = self.choose_best_column(
+                previous_df[param.field] = self.choose_best_column(
                     df=location_df[param.field], name=param.slug
                 )
+
+        metrics_df = self.get_data(ParamLocation.metrics)
+
+        previous_df = pd.concat([previous_df, metrics_df], axis=1)
+
+        previous_df.columns = [
+            col_name + " Previous" for col_name in previous_df.columns
+        ]
 
         # return the Dataframe while shifting up by one row, which make each row the previous period
         return previous_df.shift(-1)

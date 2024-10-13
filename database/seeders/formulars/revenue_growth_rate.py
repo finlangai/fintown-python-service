@@ -23,7 +23,7 @@ def get(order: int):
         category=FormulaType.FINANCIAL_METRIC,
         name="Revenue Growth Rate",
         name_vi="Tỷ lệ tăng trưởng doanh thu",
-        display_name="Tỷ lệ tăng trưởng doanh thu",
+        display_name="Tăng trưởng doanh thu",
         identifier="revenue_growth_rate",
         description="Revenue Growth Rate (Tỷ Lệ Tăng Trưởng Doanh Thu) là chỉ số đo lường mức độ tăng trưởng doanh thu của công ty trong một khoảng thời gian nhất định. Chỉ số này cho biết doanh thu đã tăng hoặc giảm bao nhiêu phần trăm so với kỳ trước, giúp đánh giá sự phát triển của doanh nghiệp qua thời gian.",
         metadata=meta,
