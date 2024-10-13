@@ -71,3 +71,24 @@ class FormularResolver(ResolverToolkit):
             # Set Average Inventories column
             average_df["Average Inventories"] = avg_inventories
         return average_df
+
+    def previous(self):
+        from database.seeders.formulars.parameters import (
+            Revenue,
+            NetProfit,
+            GrossProfit,
+        )
+
+        previous_df = pd.DataFrame()
+
+        income_df = self.get_data(ParamLocation.income_statement)
+        income_columns = [Revenue, NetProfit, GrossProfit]
+
+        for param in income_columns:
+            if param.field in income_df:
+                previous_df[param.field + " Previous"] = self.choose_best_column(
+                    df=income_df[param.field], name=param.slug
+                )
+
+        # return the Dataframe while shifting up by one row, which make each row the previous period
+        return previous_df.shift(-1)

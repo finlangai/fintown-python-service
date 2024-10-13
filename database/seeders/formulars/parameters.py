@@ -62,6 +62,12 @@ LongTermBorrowings = Parameter(
 )
 
 # ===== INCOME STATEMENT
+Revenue = Parameter(
+    field="Revenue (Bn. VND)",
+    slug="revenue_bn_vnd",
+    location=ParamLocation.income_statement,
+)
+
 Sales = Parameter(
     field="Sales",
     slug="sales",
@@ -180,9 +186,28 @@ EarningsPerShareLTM = Parameter(
     field="EPS LTM", slug="eps_ltm", location=ParamLocation.last_twelve_months
 )
 
-# ===== Average Inventory
+# ===== Average
 AverageInventory = Parameter(
     field="Average Inventories",
     slug="average_inventories",
     location=ParamLocation.average,
+)
+
+# ===== Previous
+RevenuePrevious = Parameter(
+    field="Revenue (Bn. VND) Previous",
+    slug="revenue_bn_vnd_previous",
+    location=ParamLocation.previous,
+)
+
+NetProfitPrevious = Parameter(
+    field="Net Profit For the Year Previous",
+    slug="net_profit_for_the_year_previous",
+    location=ParamLocation.previous,
+)
+
+GrossProfitPrevious = Parameter(
+    field="Gross Profit Previous",
+    slug="gross_profit_previous",
+    location=ParamLocation.previous,
 )

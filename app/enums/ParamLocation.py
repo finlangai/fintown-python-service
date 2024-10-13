@@ -15,3 +15,4 @@ class ParamLocation(int, Enum):
     # In FormularResolver
     last_twelve_months = 5
     average = 6
+    previous = 7

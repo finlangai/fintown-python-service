@@ -10,7 +10,7 @@ Hãy đưa ra nhận định chung về chất lượng tăng trưởng của c�
 Dựa trên các tiêu chí con đã được nhận định như sau:
 {overall_input}
 
-Lưu ý: Phân tích ngắn gọn (dưới 300 từ) dựa trên dữ liệu đã cho theo tiếng Việt. Tránh đưa ra ý kiến chủ quan, không cần giải thích nguyên nhân, chỉ tập trung vào số liệu, không cần mở đầu bằng dựa trên.
+Lưu ý: Kết thúc mỗi ý bằng dấu ';', phân tích ngắn gọn (dưới 300 từ) dựa trên dữ liệu đã cho theo tiếng Việt. Tránh đưa ra ý kiến chủ quan, không cần giải thích nguyên nhân, chỉ tập trung vào số liệu, không cần mở đầu bằng dựa trên.
 """
 # placeholders: criteria_name, status, assessment
 overall_input_template = """
