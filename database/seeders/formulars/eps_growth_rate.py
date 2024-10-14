@@ -1,5 +1,5 @@
 from app.models import Expression, Formular, FormularMeta
-from app.enums import ParamLocation, FormulaType
+from app.enums import FormulaType
 
 from database.seeders.formulars.parameters import (
     EarningsPerShareLTM,

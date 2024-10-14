@@ -1,4 +1,4 @@
-import os
+import os, time
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 
@@ -20,7 +20,17 @@ class BaseLLMService:
         )
 
     def invoke(self, prompt: str):
-        """
-        Invoke the LLM
-        """
-        return self.llm.invoke(prompt).content
+        """Invoke the LLM with retry logic in case of rate limit"""
+        for attempt in range(MAX_RETRIES):
+            try:
+                return self.llm.invoke(prompt).content
+            except (
+                Exception
+            ) as e:  # Replace Exception with the specific exception for rate limit if known
+                print(f"Attempt {attempt + 1}/{MAX_RETRIES} failed with error: {e}")
+                if attempt < MAX_RETRIES - 1:
+                    print("Retrying in 60 seconds...")
+                    time.sleep(60)  # Wait for 60 seconds before retrying
+                else:
+                    print("Max retries reached. Exiting.")
+                    raise

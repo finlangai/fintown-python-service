@@ -34,12 +34,11 @@ from config.llm.prompts import (
     overall_prompt,
     overall_input_template,
 )
+from config.seeder import STOCK_SYMBOLS
 
 
 def main():
     print_green_bold("Assessment Seeder")
-    # companies = list(CompanyRepository().find_by(query={"symbol": "MBB"}))
-    # companies = list(CompanyRepository().find_by(query={}))
 
     forecaster = LinearRegressionForecaster()
     llm = BaseLLMService()
@@ -47,14 +46,12 @@ def main():
     assessmentRepo = AssessmentRepository()
 
     # get the list of formulars and have it as a dict to query with identifier
-    formulars_dict = {
-        f.identifier: f
-        for f in list(
-            FormularRepository().find_by(
-                query={"metadata.category": FormulaType.FINANCIAL_METRIC}
-            )
+    formulars_list = list(
+        FormularRepository().find_by(
+            query={"metadata.category": FormulaType.FINANCIAL_METRIC}
         )
-    }
+    )
+    formulars_dict = {f.identifier: f for f in formulars_list}
 
     # get all metrics required in all criterias
     required_metrics_identifiers = []
@@ -63,9 +60,9 @@ def main():
             required_metrics_identifiers.extend(group["metrics"])
 
     # LOOP THROUGH EACH COMPANY
-    for symbol in ["VNM"]:
+    # for symbol in ["VCB"]:
+    for symbol in STOCK_SYMBOLS:
         print_pink_bold(f"=== {symbol}")
-
         # ======================================
         # ===== PREPARE METRICS DATAFRAME ======
         # ======================================
@@ -88,13 +85,9 @@ def main():
         # ======================================================
         forecasted_df = pd.DataFrame()
 
+        print(text_to_red(f"forecast {len(metrics_df.columns)} metrics"))
         # loop through each column in the prepared dataframe
         for col_name in metrics_df.columns:
-            print(
-                text_to_red(f"forecasting")
-                + " "
-                + text_to_italic(formulars_dict[col_name].name)
-            )
             # get the corresponding metric series and remove invalid rows
             series = forecaster.polish_series(metrics_df, col_name)
 
@@ -111,17 +104,27 @@ def main():
         # storing result
         criterias_holder: list[Criteria] = []
 
-        print(text_to_blue(f"====== APPRAISING CRITERIAS ======"))
+        print_green_bold("====== APPRAISING CRITERIAS ======")
         for criteria in criterias:
             print(f"=== Criteria {criteria['criteria_name']}")
+            # group of cluster in config file
             groups: list = criteria["groups"]
             clusters_holder: list[Cluster] = []
-            # ===========================================================
-            # ====== GENERATE ASSESSMENT & STATUS FOR EACH CLUSTER ======
-            # ===========================================================
+            # ====================================================================
+            # ====== GENERATE ASSESSMENT & STATUS FOR EACH GROUP OR CLUSTER ======
+            # ====================================================================
             # loop through each cluster
             for cluster in groups:
-                print(f"- group {cluster['cluster_name']}")
+                print(f"- cluster {cluster['cluster_name']}")
+                # check if the symbol has at least one metric present in the cluster
+                is_metric_present = set(cluster["metrics"]).intersection(
+                    metrics_df.columns
+                )
+                if not is_metric_present:
+                    print(f"{text_to_italic(f"{text_to_red("not")} present")}")
+                    clusters_holder.append(None)
+                    continue
+
                 metrics_data = ""
                 cluster_metric_identifiers = []
                 # map the metrics data for prompting
@@ -164,12 +167,19 @@ def main():
                         metrics=cluster_metric_identifiers,
                     )
                 )
+                print(f"{text_to_italic("present")}")
+
             # =======================================================
             # ====== GENERATE ASSESSMENT & STATUS FOR CRITERIA ======
             # =======================================================
+            print(
+                f"{text_to_blue(f"= Assessing criteria {criteria['criteria_name']}")}"
+            )
             thesis_input = ""
             # loop through each cluster to generate thesis_input
             for index, cluster in enumerate(clusters_holder):
+                if cluster is None:
+                    continue
                 thesis_input += thesis_input_template.format(
                     cluster_name=groups[index]["cluster_name"],
                     status=cluster.status,
@@ -200,6 +210,9 @@ def main():
         # =====================================================
         # ============ GENERATE OVERALL ASSESSMENT ============
         # =====================================================
+        print(
+            f"{text_to_blue(f"= Assessing Overall base on {len(criterias)} criterias")}"
+        )
         # loop through and generate overall input
         overall_input = ""
         for index, criteria in enumerate(criterias_holder):
@@ -222,7 +235,7 @@ def main():
             profitability=criterias_holder[0],
             solvency=criterias_holder[1],
             revenue_profit=criterias_holder[2],
-            assets_cashflow=criterias_holder[3],
+            cashflow=criterias_holder[3],
             assets_equity=criterias_holder[4],
         )
 
@@ -242,9 +255,11 @@ def main():
             forecast=forecasted_list,
             future_deltas=deltas,
             insights=insights,
+            updated_at=datetime.now(),
         )
         # save the record
         assessmentRepo.save(final_model)
+        print_pink_bold(f"========= Assessment for {symbol} inserted")
 
 
 if __name__ == "__main__" or __name__ == "tasks":

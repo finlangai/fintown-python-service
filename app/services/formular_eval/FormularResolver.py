@@ -50,6 +50,9 @@ class FormularResolver(ResolverToolkit):
         eps_ltm = eps_ltm.iloc[::-1]
         eps_ltm.name = "EPS LTM"
 
+        # concat EPS LTM Dataframe
+        metrics_df = pd.concat([metrics_df, eps_ltm.to_frame()], axis=1)
+
         # === calculate regular metrics
         from config.formular_resolver import METRICS_LOCATION_IDENTIFIERS
 
@@ -57,14 +60,13 @@ class FormularResolver(ResolverToolkit):
         required_formulars = list(
             FormularRepository().find_by({"identifier": {"$in": formular_identifers}})
         )
+        # loop through each formular and concat it to the metrics_df
         for formular in required_formulars:
             metric_series = self.appraise(formular)
             if metric_series is None:
                 continue
             metric_series.rename(f"{formular.name}", inplace=True)
             metrics_df = pd.concat([metrics_df, metric_series.to_frame()], axis=1)
-
-        metrics_df = pd.concat([metrics_df, eps_ltm.to_frame()], axis=1)
 
         return metrics_df
 

@@ -241,7 +241,7 @@ OwnerEquityPrevious = Parameter(
     location=ParamLocation.previous,
 )
 EarningsPerShareLTMPrevious = Parameter(
-    field="EPS LTM Previous", slug="eps_ltm_previous", location=ParamLocation.metrics
+    field="EPS LTM Previous", slug="eps_ltm_previous", location=ParamLocation.previous
 )
 
 EBITDAPrevious = Parameter(

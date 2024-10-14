@@ -20,7 +20,7 @@ class Criteria(BaseModel):
     assessment: str
     status: str
     # group of metrics cluster
-    groups: List[Cluster]
+    groups: List[Cluster | None]
 
 
 class Insights(BaseModel):
@@ -28,7 +28,7 @@ class Insights(BaseModel):
     profitability: Criteria
     solvency: Criteria
     revenue_profit: Criteria
-    assets_cashflow: Criteria
+    cashflow: Criteria
     assets_equity: Criteria
 
 
