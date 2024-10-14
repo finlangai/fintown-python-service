@@ -16,15 +16,14 @@ from app.models import (
     MetricHistoryRepository,
     FormularRepository,
 )
-from app.models.Assessment import (
+from app.models import (
     Assessment,
-    Forecasted,
-    Insights,
-    Cluster,
-    Criteria,
+    AssessmentCluster,
+    AssessmentCriteria,
     AssessmentRepository,
+    CriteriaRepository,
+    CriteriaCluster,
 )
-from config.assessment import criterias
 from config.llm.prompts import (
     cluster_review_prompt,
     metric_input_template,
@@ -45,6 +44,13 @@ def main():
 
     assessmentRepo = AssessmentRepository()
 
+    # get the list of criterias
+    criterias_list = list(
+        CriteriaRepository().find_by(
+            query={},
+        )
+    )
+
     # get the list of formulars and have it as a dict to query with identifier
     formulars_list = list(
         FormularRepository().find_by(
@@ -55,13 +61,13 @@ def main():
 
     # get all metrics required in all criterias
     required_metrics_identifiers = []
-    for criteria in criterias:
-        for group in criteria["groups"]:
-            required_metrics_identifiers.extend(group["metrics"])
+    for criteria in criterias_list:
+        for group in criteria.group:
+            required_metrics_identifiers.extend(group.metrics)
 
     # LOOP THROUGH EACH COMPANY
-    # for symbol in ["VCB"]:
-    for symbol in STOCK_SYMBOLS:
+    for symbol in ["VCB"]:
+        # for symbol in STOCK_SYMBOLS:
         print_pink_bold(f"=== {symbol}")
         # ======================================
         # ===== PREPARE METRICS DATAFRAME ======
@@ -102,22 +108,22 @@ def main():
         # ======= ASSESSMENT & STATUS FOR EACH GROUP ========
         # ===================================================
         # storing result
-        criterias_holder: list[Criteria] = []
+        criterias_holder: list[AssessmentCriteria] = []
 
         print_green_bold("====== APPRAISING CRITERIAS ======")
-        for criteria in criterias:
-            print(f"=== Criteria {criteria['criteria_name']}")
+        for criteria in criterias_list:
+            print(f"=== Criteria {criteria.name}")
             # group of cluster in config file
-            groups: list = criteria["groups"]
-            clusters_holder: list[Cluster] = []
+            group: list[CriteriaCluster] = criteria.group
+            clusters_holder: list[AssessmentCluster] = []
             # ====================================================================
             # ====== GENERATE ASSESSMENT & STATUS FOR EACH GROUP OR CLUSTER ======
             # ====================================================================
             # loop through each cluster
-            for cluster in groups:
-                print(f"- cluster {cluster['cluster_name']}")
+            for cluster in group:
+                print(f"- cluster {cluster.name}")
                 # check if the symbol has at least one metric present in the cluster
-                is_metric_present = set(cluster["metrics"]).intersection(
+                is_metric_present = set(cluster.metrics).intersection(
                     metrics_df.columns
                 )
                 if not is_metric_present:
@@ -128,7 +134,7 @@ def main():
                 metrics_data = ""
                 cluster_metric_identifiers = []
                 # map the metrics data for prompting
-                for identifier in cluster["metrics"]:
+                for identifier in cluster.metrics:
                     # if the required metrics not present on this symbol, skip
                     if identifier not in metrics_df:
                         continue
@@ -147,7 +153,7 @@ def main():
                 # create prompt for cluster assessment
                 prompt_for_cluster = cluster_review_prompt.format(
                     metrics_data=metrics_data,
-                    metric_cluster_name=cluster["cluster_name"],
+                    metric_cluster_name=cluster.name,
                     symbol=symbol,
                 )
                 # invoking the llm for assessment
@@ -161,7 +167,7 @@ def main():
                 cluster_status = llm.invoke(cluster_status_prompt)
                 # push new cluster to the list
                 clusters_holder.append(
-                    Cluster(
+                    AssessmentCluster(
                         assessment=cluster_assessment,
                         status=cluster_status,
                         metrics=cluster_metric_identifiers,
@@ -172,22 +178,20 @@ def main():
             # =======================================================
             # ====== GENERATE ASSESSMENT & STATUS FOR CRITERIA ======
             # =======================================================
-            print(
-                f"{text_to_blue(f"= Assessing criteria {criteria['criteria_name']}")}"
-            )
+            print(f"{text_to_blue(f"= Assessing criteria {criteria.name}")}")
             thesis_input = ""
             # loop through each cluster to generate thesis_input
             for index, cluster in enumerate(clusters_holder):
                 if cluster is None:
                     continue
                 thesis_input += thesis_input_template.format(
-                    cluster_name=groups[index]["cluster_name"],
+                    cluster_name=group[index].name,
                     status=cluster.status,
                     review=cluster.assessment,
                 )
             # create prompt for criteria thesis
             criteria_prompt = criteria_thesis_prompt.format(
-                criteria_name=criteria["criteria_name"],
+                criteria_name=criteria.name,
                 symbol=symbol,
                 thesis_input=thesis_input,
             )
@@ -201,7 +205,7 @@ def main():
             criteria_status = llm.invoke(criteria_status_prompt)
             # set the criteria to the holder
             criterias_holder.append(
-                Criteria(
+                AssessmentCriteria(
                     assessment=criteria_assessment,
                     status=criteria_status,
                     groups=clusters_holder,
@@ -211,13 +215,13 @@ def main():
         # ============ GENERATE OVERALL ASSESSMENT ============
         # =====================================================
         print(
-            f"{text_to_blue(f"= Assessing Overall base on {len(criterias)} criterias")}"
+            f"{text_to_blue(f"= Assessing Overall base on {len(criterias_list)} criterias")}"
         )
         # loop through and generate overall input
         overall_input = ""
         for index, criteria in enumerate(criterias_holder):
             overall_input += overall_input_template.format(
-                criteria_name=criterias[index]["criteria_name"],
+                criteria_name=criterias_list[index].name,
                 status=criteria.status,
                 assessment=criteria.assessment,
             )
@@ -230,15 +234,21 @@ def main():
         # ==============================================
         # ============ CREATE FINAL MODEL ============
         # ==============================================
-        insights = Insights(
-            overall=overall_assessment,
-            profitability=criterias_holder[0],
-            solvency=criterias_holder[1],
-            revenue_profit=criterias_holder[2],
-            cashflow=criterias_holder[3],
-            assets_equity=criterias_holder[4],
-        )
+        # insights = AssessmentInsights(
+        #     overall=overall_assessment,
+        #     profitability=criterias_holder[0],
+        #     solvency=criterias_holder[1],
+        #     revenue_profit=criterias_holder[2],
+        #     cashflow=criterias_holder[3],
+        #     assets_equity=criterias_holder[4],
+        # )
+        insights = dict()
+        insights.update({"overall": overall_assessment})
+        # update into the dict
+        for index, criteria in enumerate(criterias_list):
+            insights.update({criteria.slug: criterias_holder[index]})
 
+        # create forcasted list
         forecasted_list = forecasted_df.apply(
             lambda row: {"year": row.name, "metrics": row.to_dict()}, axis=1
         ).tolist()

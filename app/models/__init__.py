@@ -14,3 +14,4 @@ from .Position import *
 from .Officer import *
 from .Transaction import *
 from .Assessment import *
+from .Criteria import *

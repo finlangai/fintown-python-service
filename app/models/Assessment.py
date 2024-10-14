@@ -9,30 +9,30 @@ from datetime import datetime
 from core.mongodb import get_database
 
 
-class Cluster(BaseModel):
+class AssessmentCluster(BaseModel):
     assessment: str
     status: str
     # this should be the string of the identifier
     metrics: List[int | str]
 
 
-class Criteria(BaseModel):
+class AssessmentCriteria(BaseModel):
     assessment: str
     status: str
     # group of metrics cluster
-    groups: List[Cluster | None]
+    groups: List[AssessmentCluster | None]
 
 
-class Insights(BaseModel):
-    overall: str
-    profitability: Criteria
-    solvency: Criteria
-    revenue_profit: Criteria
-    cashflow: Criteria
-    assets_equity: Criteria
+# class AssessmentInsights(BaseModel):
+#     overall: str
+#     profitability: AssessmentCriteria
+#     solvency: AssessmentCriteria
+#     revenue_profit: AssessmentCriteria
+#     cashflow: AssessmentCriteria
+#     assets_equity: AssessmentCriteria
 
 
-class Forecasted(BaseModel):
+class AssessmentForecasted(BaseModel):
     year: Optional[int] = None
     metrics: Optional[Dict[str, Any]] = None
 
@@ -45,9 +45,9 @@ class Assessment(BaseModel):
     id: Optional[str] = Field(default=None, alias="_id")
     symbol: str
     # assessment from llm
-    insights: Insights
+    insights: Dict[str, str | AssessmentCriteria]
     # forecast next five year
-    forecast: List[Forecasted]
+    forecast: List[AssessmentForecasted]
     # growth percentage for each metrics
     future_deltas: Dict[str, float]
     # updated time

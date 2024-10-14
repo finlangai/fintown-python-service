@@ -5,5 +5,4 @@ from .seeder import *
 from .firebase import *
 from .simplize import *
 from .cafef import *
-from .assessment import *
 from .formular_resolver import *
