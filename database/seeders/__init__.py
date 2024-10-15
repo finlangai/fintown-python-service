@@ -18,3 +18,4 @@ from .officers_seeder import *
 from .positions_seeder import *
 from .transactions_seeder import *
 from .criterias_seeder import *
+from .stash_seeder import *
