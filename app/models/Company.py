@@ -16,6 +16,7 @@ class CompanyMovingAverage(BaseModel):
 
 
 class CompanyDelta(BaseModel):
+    delta_in_day: Optional[float]
     delta_in_week: Optional[float]
     delta_in_month: Optional[float]
     delta_in_year: Optional[float]
