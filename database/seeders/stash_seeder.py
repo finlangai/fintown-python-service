@@ -1,15 +1,27 @@
 from app.utils import print_green_bold, model_mapper, json_camel_to_snake, text_to_red
-from app.services import StockFinanceService, FormularResolver, StockQuoteService
+from app.services import (
+    StockFinanceService,
+    FormularResolver,
+    StockQuoteService,
+    StockInfoService,
+)
 from app.enums import ParamLocation
 from config.seeder import STOCK_SYMBOLS
 from core import mongodb
 from datetime import timedelta, datetime
 import numpy as np, pandas as pd
 
+from database.seeders import stash_stats_seeder
+
 
 def main():
+    """
+    This seeder only seed symbol, last 5 quarterly and yearly record of revenue, equity, net_profit
+    And VN30 summary
+    """
     print_green_bold("=== SEEDING STASH")
     financeService = FormularResolver(period="quarter")
+    infoService = StockInfoService()
 
     stash_holder: list = []
 
@@ -21,11 +33,20 @@ def main():
 
     period_list = ["quarter", "year"]
     for symbol in vn30_list:
-        company_stash = {"symbol": symbol, "quarter": [], "year": []}
+        financeService.update_symbol(symbol=symbol)
+        infoService.update_symbol(symbol=symbol)
+
+        company_info = infoService.overview()
+        company_stash = {
+            "symbol": symbol,
+            "industry": company_info["industry"],
+            "exchange": company_info["exchange"],
+            "quarter": [],
+            "year": [],
+        }
 
         for period in period_list:
             financeService.update_period(period)
-            financeService.update_symbol(symbol=symbol)
 
             # get required df
             ratio_df = financeService.get_data(ParamLocation.ratio)
@@ -109,6 +130,16 @@ def main():
     stash_holder.append(vn30_stash)
     mongodb.insert_many("stash", stash_holder)
     print_green_bold(f"{len(stash_holder)} stash inserted")
+
+    # ======================================================
+    # ====================RELATED SEEDER====================
+    # ======================================================
+    # related seeder
+    from database.seeders import deltas_seeder, best_npm_seeder
+
+    deltas_seeder.main()
+    best_npm_seeder.main()
+    stash_stats_seeder.main()
 
 
 if __name__ == "__main__" or __name__ == "tasks":

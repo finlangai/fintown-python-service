@@ -2,18 +2,19 @@ from app.models import Expression, Formular, FormularMeta
 from app.enums import FormulaType
 
 from database.seeders.formulars.parameters import (
-    NetSales,
     TotalAsset,
+    Liabilities,
     OwnerEquity,
     OutstandingShare,
     ClosedPrice,
 )
 
 # === BASIC
+BVPS = f"( ( {{{TotalAsset.slug}}} - {{{Liabilities.slug}}} ) / {{{OutstandingShare.slug}}} )"
 BASIC = Expression(
     name="Basic",
-    expression=f"{{{ClosedPrice.slug}}} / ( {{{OwnerEquity.slug}}} / {{{OutstandingShare.slug}}} )",
-    parameters=[ClosedPrice, OwnerEquity, OutstandingShare],
+    expression=f"{{{ClosedPrice.slug}}} / {BVPS}",
+    parameters=[ClosedPrice, TotalAsset, Liabilities, OutstandingShare],
 )
 
 

@@ -1,6 +1,7 @@
 from core import mongodb
 from database.seeders.formulars import (
     asset_turnover,
+    book_value_per_share,
     capital_employed,
     debt_to_equity,
     earnings_per_share,
@@ -70,6 +71,7 @@ def main():
         eps_growth_rate,
         fcf_growth_rate,
         roa_growth_rate,
+        book_value_per_share,
     ]
     formulars = [
         formular_module.get(index + 1)
