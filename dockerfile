@@ -20,4 +20,5 @@ EXPOSE 8006
 ENV PYTHONUNBUFFERED 1
 
 # Run uvicorn server
-CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8006"]
+# CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "8006"]
+CMD ["fastapi", "run", "server.py", "--host", "0.0.0.0", "--port", "8006"]
