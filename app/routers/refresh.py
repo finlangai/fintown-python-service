@@ -9,7 +9,7 @@ import jobs.refresh.stash_stats
 router = APIRouter()
 
 
-@router.get("/refresh/stash_stats")
+@router.post("/refresh/stash_stats")
 async def refresh_stash_stats():
 
     closure_func = jobs.refresh.stash_stats.get_closure()

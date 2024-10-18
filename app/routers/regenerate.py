@@ -1,5 +1,5 @@
 from starlette.responses import StreamingResponse
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from app.utils import stream_function_output
 import jobs
@@ -9,7 +9,7 @@ import jobs.regenerate.assessment
 router = APIRouter()
 
 
-@router.get("/regenerate/assessment")
+@router.post("/regenerate/assessment")
 async def regenerate_assessment(symbol: str):
     if symbol is None:
         raise HTTPException(
