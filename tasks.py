@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 
 @task
 def dev(c):
-    c.run("fastapi dev server.py")
+    c.run("fastapi dev server.py --port 8006")
 
 
 @task

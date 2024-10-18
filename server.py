@@ -1,7 +1,7 @@
 import sys
 
 # DISABLE CACHE
-sys.dont_write_bytecode = True
+# sys.dont_write_bytecode = True
 
 from dotenv import load_dotenv
 
@@ -11,12 +11,12 @@ load_dotenv()
 ### ================================END SYSTEM CONFIG===============================
 ### ================================================================================
 
-from fastapi import FastAPI, responses
+from fastapi import FastAPI, responses, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="FinTown Python Service",
-    version="369",
+    version="1",
     swagger_ui_parameters={"syntaxHighlight.theme": "obsidian"},
 )
 
@@ -37,3 +37,19 @@ def read_root():
 from app.routers import stocks
 
 app.include_router(stocks.router)
+
+# =============================================
+# =========== BELOW IS FOR TESTING ============
+# =============================================
+
+
+from starlette.responses import StreamingResponse
+from app.utils import stream_function_output
+from jobs import inw
+
+
+@app.get("/stream")
+async def stream():
+    return StreamingResponse(
+        stream_function_output(inw.exec), media_type="text/event-stream"
+    )

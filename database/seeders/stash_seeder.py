@@ -119,6 +119,7 @@ def main():
 
     vn30_stash = {
         "symbol": "VN30",
+        "is_stock": False,
         "pe": float(pevn30),
         "pb": float(pbvn30),
         "avg_52w": float(avg_52w),

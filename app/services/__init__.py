@@ -5,3 +5,4 @@ from .forecasting import *
 from .llm import *
 from .firebase import *
 from .cafef import *
+from .discord import *

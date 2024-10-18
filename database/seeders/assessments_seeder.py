@@ -37,6 +37,9 @@ from config.seeder import STOCK_SYMBOLS
 
 
 def main():
+    """
+    Depend on criteria seeder
+    """
     print_green_bold("Assessment Seeder")
 
     forecaster = LinearRegressionForecaster()
@@ -215,7 +218,7 @@ def main():
         # ============ GENERATE OVERALL ASSESSMENT ============
         # =====================================================
         print(
-            f"{text_to_blue(f"= Assessing Overall base on {len(criterias_list)} criterias")}"
+            f"{text_to_red(f"= Assessing Overall base on {len(criterias_list)} criterias")}"
         )
         # loop through and generate overall input
         overall_input = ""
@@ -234,14 +237,6 @@ def main():
         # ==============================================
         # ============ CREATE FINAL MODEL ============
         # ==============================================
-        # insights = AssessmentInsights(
-        #     overall=overall_assessment,
-        #     profitability=criterias_holder[0],
-        #     solvency=criterias_holder[1],
-        #     revenue_profit=criterias_holder[2],
-        #     cashflow=criterias_holder[3],
-        #     assets_equity=criterias_holder[4],
-        # )
         insights = dict()
         insights.update({"overall": overall_assessment})
         # update into the dict
@@ -253,12 +248,12 @@ def main():
             lambda row: {"year": row.name, "metrics": row.to_dict()}, axis=1
         ).tolist()
         # calculate the future delta for each metrics
-        deltas: dict[str, float] = {}
-        for identifier in forecasted_df.columns:
-            inital = metrics_df.iloc[-1][identifier]
-            farthest = forecasted_df.iloc[-1][identifier]
-            delta = (farthest - inital) / inital
-            deltas[identifier] = delta
+        # deltas: dict[str, float] = {}
+        # for identifier in forecasted_df.columns:
+        #     inital = metrics_df.iloc[-1][identifier]
+        #     farthest = forecasted_df.iloc[-1][identifier]
+        #     delta = (farthest - inital) / inital
+        #     deltas[identifier] = delta
 
         final_model = Assessment(
             symbol=symbol,
@@ -269,6 +264,7 @@ def main():
         )
         # save the record
         assessmentRepo.save(final_model)
+        # print(final_model.model_dump_json(indent=4))
         print_pink_bold(f"========= Assessment for {symbol} inserted")
 
 

@@ -25,7 +25,7 @@ def main():
         BVPS ltm
         EPS ltm
     """
-    print_green_bold("=== SEEDING STASH METRICS")
+    print_green_bold("=== SEEDING STATS FOR STASH")
     # get the list of symbol from companies symbol
     symbols = mongodb.query_with_projection(
         CompanyRepository.Meta.collection_name, {}, {"_id": 0, "symbol": 1}
@@ -57,14 +57,14 @@ def main():
         financeService.update_symbol(symbol)
         outstanding_share = float(
             financeService.get_data(ParamLocation.ratio).iloc[0][
-                "Market Capital (Bn. VND)"
+                "Outstanding Share (Mil. Shares)"
             ]
         )
+        marketcap = last_closed_price * outstanding_share
 
         # =========================================
         # =========== CALCULATE METRICS ===========
         # =========================================
-        # ROE
         # get required metric formulars
         identifier_list = [
             "return_on_equity",
@@ -79,13 +79,14 @@ def main():
         )
         # calculate LTM
         roe_ltm = float(metric_df.head(4)["return_on_equity"].sum() / 4)
-        eps_ltm = float(metric_df.head(4)["earnings_per_share"].sum() / 4)
+        eps_ltm = float(metric_df.head(4)["earnings_per_share"].sum())
         bvps_ltm = float(metric_df.iloc[0]["book_value_per_share"])
         pe_ltm = last_closed_price / eps_ltm
         pb_ltm = last_closed_price / bvps_ltm
 
         stats_dict = {
-            "last_closed": last_closed_price,
+            "last_closed_price": last_closed_price,
+            "marketcap": marketcap,
             "outstanding_share": outstanding_share,
             "pe_ltm": pe_ltm,
             "pb_ltm": pb_ltm,
