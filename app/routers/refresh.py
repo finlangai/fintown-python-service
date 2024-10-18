@@ -5,8 +5,6 @@ from app.utils import stream_function_output
 import jobs
 import jobs.refresh
 import jobs.refresh.stash_stats
-import jobs.regenerate
-import jobs.regenerate.assessment
 
 router = APIRouter()
 

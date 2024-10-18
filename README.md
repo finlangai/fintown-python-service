@@ -1,4 +1,6 @@
-### Python version >=3.10
+### Python version >=3.12.3
+
+run `pip install -r requirements.txt` to install dependencies
 
 #### The list of stock symbols seeders will seed lie in `config/seeder/stock_list.py`
 
