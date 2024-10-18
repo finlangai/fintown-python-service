@@ -2,6 +2,13 @@ import pandas as pd, numpy as np, sys
 from datetime import datetime
 from core import mongodb
 
+from app.services import (
+    LinearRegressionForecaster,
+    BaseLLMService,
+    PromptHelper,
+    DatabaseResources,
+)
+from app.enums import FormulaType
 from app.utils import (
     print_pink_bold,
     print_green_bold,
@@ -9,14 +16,9 @@ from app.utils import (
     text_to_italic,
     text_to_blue,
 )
-from app.services import LinearRegressionForecaster, BaseLLMService
-from app.enums import FormulaType
 from app.models import (
-    CompanyRepository,
     MetricHistoryRepository,
     FormularRepository,
-)
-from app.models import (
     Assessment,
     AssessmentCluster,
     AssessmentCriteria,
@@ -24,43 +26,35 @@ from app.models import (
     CriteriaRepository,
     CriteriaCluster,
 )
-from config.llm.prompts import (
-    cluster_review_prompt,
-    metric_input_template,
-    status_prompt,
-    thesis_input_template,
-    criteria_thesis_prompt,
-    overall_prompt,
-    overall_input_template,
-)
+from config.llm.prompts import status_prompt
 from config.seeder import STOCK_SYMBOLS
 
 
-def main():
+def main(custom_symbol: str = None):
     """
     Depend on criteria seeder
     """
-    print_green_bold("Assessment Seeder")
+    print_green_bold("=== Assessments Seeder")
+    # ====================================================
+    # ======= CONFIG SYMBOL TO SEED ASSESSMENT FOR =======
+    # ====================================================
+    # symbol_list = STOCK_SYMBOLS
+    symbol_list = ["VCB"]
+    if custom_symbol is not None:
+        symbol_list = [custom_symbol]
 
-    forecaster = LinearRegressionForecaster()
+    # ====================================================
+    # ============= PREPARE REQUIRED SERVICE =============
+    # ====================================================
+
     llm = BaseLLMService()
-
+    forecaster = LinearRegressionForecaster()
     assessmentRepo = AssessmentRepository()
 
     # get the list of criterias
-    criterias_list = list(
-        CriteriaRepository().find_by(
-            query={},
-        )
-    )
-
+    criterias_list = DatabaseResources.criterias_list()
     # get the list of formulars and have it as a dict to query with identifier
-    formulars_list = list(
-        FormularRepository().find_by(
-            query={"metadata.category": FormulaType.FINANCIAL_METRIC}
-        )
-    )
-    formulars_dict = {f.identifier: f for f in formulars_list}
+    formulars_dict = DatabaseResources.formulars_dict()
 
     # get all metrics required in all criterias
     required_metrics_identifiers = []
@@ -69,7 +63,7 @@ def main():
             required_metrics_identifiers.extend(group.metrics)
 
     # LOOP THROUGH EACH COMPANY
-    for symbol in ["VCB"]:
+    for symbol in symbol_list:
         # for symbol in STOCK_SYMBOLS:
         print_pink_bold(f"=== {symbol}")
         # ======================================
@@ -81,7 +75,9 @@ def main():
             projection={"_id": 0, "year": 1, "metrics": 1},
         )
 
+        # PREPARE THE METRICS DATAFRAME OF THE SYMBOL FROM METRIC_RECORDS COLLECTION
         metrics_df: pd.DataFrame = forecaster.prepare_dataframe(raw=history)
+
         # drop all un required columns
         for column_name in metrics_df:
             if column_name not in required_metrics_identifiers:
@@ -107,18 +103,20 @@ def main():
 
         # round to two digit
         forecasted_df = forecasted_df.round(2)
+
         # ===================================================
         # ======= ASSESSMENT & STATUS FOR EACH GROUP ========
         # ===================================================
         # storing result
         criterias_holder: list[AssessmentCriteria] = []
 
-        print_green_bold("====== APPRAISING CRITERIAS ======")
+        print_green_bold("====== ASSESSING CRITERIAS ======")
         for criteria in criterias_list:
             print(f"=== Criteria {criteria.name}")
             # group of cluster in config file
             group: list[CriteriaCluster] = criteria.group
             clusters_holder: list[AssessmentCluster] = []
+
             # ====================================================================
             # ====== GENERATE ASSESSMENT & STATUS FOR EACH GROUP OR CLUSTER ======
             # ====================================================================
@@ -134,30 +132,20 @@ def main():
                     clusters_holder.append(None)
                     continue
 
-                metrics_data = ""
-                cluster_metric_identifiers = []
-                # map the metrics data for prompting
-                for identifier in cluster.metrics:
-                    # if the required metrics not present on this symbol, skip
-                    if identifier not in metrics_df:
-                        continue
-                    # get the metric info from the dict
-                    metric_info = formulars_dict[identifier]
-                    # concat to the metrics_data
-                    metrics_data += metric_input_template.format(
-                        metric_name=metric_info.name,
-                        metric_name_vi=metric_info.name_vi,
-                        historical_data=metrics_df[identifier].to_string(),
-                        forecasted_data=forecasted_df[identifier].to_string(),
-                    )
-                    # push the index of the metric into metric_indexes for defining cluster later
-                    cluster_metric_identifiers.append(metric_info.identifier)
+                # get the list of appraisable metric identifiers in the cluster
+                cluster_metric_identifiers = [
+                    formulars_dict[identifier].identifier
+                    for identifier in cluster.metrics
+                    if identifier in metrics_df
+                ]
 
                 # create prompt for cluster assessment
-                prompt_for_cluster = cluster_review_prompt.format(
-                    metrics_data=metrics_data,
-                    metric_cluster_name=cluster.name,
+                prompt_for_cluster = PromptHelper.craft_cluster(
                     symbol=symbol,
+                    cluster=cluster,
+                    metrics_df=metrics_df,
+                    forecasted_df=forecasted_df,
+                    formulars_dict=formulars_dict,
                 )
                 # invoking the llm for assessment
                 cluster_assessment = llm.invoke(prompt_for_cluster)
@@ -182,21 +170,11 @@ def main():
             # ====== GENERATE ASSESSMENT & STATUS FOR CRITERIA ======
             # =======================================================
             print(f"{text_to_blue(f"= Assessing criteria {criteria.name}")}")
-            thesis_input = ""
-            # loop through each cluster to generate thesis_input
-            for index, cluster in enumerate(clusters_holder):
-                if cluster is None:
-                    continue
-                thesis_input += thesis_input_template.format(
-                    cluster_name=group[index].name,
-                    status=cluster.status,
-                    review=cluster.assessment,
-                )
-            # create prompt for criteria thesis
-            criteria_prompt = criteria_thesis_prompt.format(
-                criteria_name=criteria.name,
+            criteria_prompt = PromptHelper.craft_criteria(
                 symbol=symbol,
-                thesis_input=thesis_input,
+                criteria_name=criteria.name,
+                clusters_holder=clusters_holder,
+                group=group,
             )
             # invoke the llm for assessment
             criteria_assessment = llm.invoke(criteria_prompt)
@@ -220,23 +198,19 @@ def main():
         print(
             f"{text_to_red(f"= Assessing Overall base on {len(criterias_list)} criterias")}"
         )
-        # loop through and generate overall input
-        overall_input = ""
-        for index, criteria in enumerate(criterias_holder):
-            overall_input += overall_input_template.format(
-                criteria_name=criterias_list[index].name,
-                status=criteria.status,
-                assessment=criteria.assessment,
-            )
-        # create prompt for overall assessment
-        overall_assessment_prompt = overall_prompt.format(
-            symbol=symbol, overall_input=overall_input
+
+        overall_assessment_prompt = PromptHelper.craft_overall(
+            symbol=symbol,
+            criterias_holder=criterias_holder,
+            criterias_list=criterias_list,
         )
         # invoke the llm for overall assessment
         overall_assessment = llm.invoke(overall_assessment_prompt)
+
         # ==============================================
-        # ============ CREATE FINAL MODEL ============
+        # ============ CREATE FINAL MODEL ==============
         # ==============================================
+        print(f"{text_to_red(f"= Creating final model")}")
         insights = dict()
         insights.update({"overall": overall_assessment})
         # update into the dict
@@ -247,25 +221,16 @@ def main():
         forecasted_list = forecasted_df.apply(
             lambda row: {"year": row.name, "metrics": row.to_dict()}, axis=1
         ).tolist()
-        # calculate the future delta for each metrics
-        # deltas: dict[str, float] = {}
-        # for identifier in forecasted_df.columns:
-        #     inital = metrics_df.iloc[-1][identifier]
-        #     farthest = forecasted_df.iloc[-1][identifier]
-        #     delta = (farthest - inital) / inital
-        #     deltas[identifier] = delta
 
         final_model = Assessment(
             symbol=symbol,
             forecast=forecasted_list,
-            future_deltas=deltas,
             insights=insights,
             updated_at=datetime.now(),
         )
         # save the record
         assessmentRepo.save(final_model)
-        # print(final_model.model_dump_json(indent=4))
-        print_pink_bold(f"========= Assessment for {symbol} inserted")
+        print_pink_bold(f"=== Inserted assessment for {symbol}")
 
 
 if __name__ == "__main__" or __name__ == "tasks":

@@ -34,9 +34,10 @@ def read_root():
     return responses.RedirectResponse(url="/docs")
 
 
-from app.routers import stocks
+from app.routers import stocks, regenerate
 
 app.include_router(stocks.router)
+app.include_router(regenerate.router)
 
 # =============================================
 # =========== BELOW IS FOR TESTING ============

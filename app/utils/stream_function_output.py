@@ -2,8 +2,6 @@ from fastapi import FastAPI
 from starlette.responses import StreamingResponse
 import contextlib, io, sys, threading, time, re
 
-re
-
 
 def remove_ansi_escape_sequences(text):
     # Updated regex pattern for ANSI escape sequences

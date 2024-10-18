@@ -49,7 +49,7 @@ class Assessment(BaseModel):
     # forecast next five year
     forecast: List[AssessmentForecasted]
     # growth percentage for each metrics
-    future_deltas: Dict[str, float]
+    # future_deltas: Optional[Dict[str, float]] = None
     # updated time
     updated_at: Optional[datetime] = None
 
