@@ -16,6 +16,8 @@ from datetime import timedelta
 
 def main():
     """
+    *Notice: depend on symbols inside companies collection
+
     This seeder in charge of:
         market cap
         price
@@ -96,6 +98,9 @@ def main():
         }
         mongodb.update_one("stash", {"symbol": symbol}, {"stats": stats_dict})
         print_green_bold(f"stats updated for {symbol}")
+
+    # return the count of symbol
+    return len(symbol_list)
 
 
 if __name__ == "__main__" or __name__ == "tasks":

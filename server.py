@@ -34,23 +34,12 @@ def read_root():
     return responses.RedirectResponse(url="/docs")
 
 
-from app.routers import stocks, regenerate
+from app.routers import stocks, regenerate, refresh
 
 app.include_router(stocks.router)
 app.include_router(regenerate.router)
+app.include_router(refresh.router)
 
 # =============================================
 # =========== BELOW IS FOR TESTING ============
 # =============================================
-
-
-from starlette.responses import StreamingResponse
-from app.utils import stream_function_output
-from jobs import inw
-
-
-@app.get("/stream")
-async def stream():
-    return StreamingResponse(
-        stream_function_output(inw.exec), media_type="text/event-stream"
-    )
