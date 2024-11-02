@@ -56,7 +56,6 @@ def main():
         return_on_sales,
         return_of_capital_employed,
         ev_to_ebit,
-        weighted_average_cost_of_capital,
         debt_to_equity,
         interest_coverage_ratio,
         debt_to_assets_ratio,

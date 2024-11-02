@@ -23,3 +23,4 @@ from .deltas_seeder import *
 from .best_npm_seeder import *
 from .stash_stats_seeder import *
 from .price_histories_seeder import *
+from .update_quotes_seeder import *

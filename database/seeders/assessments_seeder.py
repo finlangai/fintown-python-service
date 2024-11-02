@@ -85,6 +85,7 @@ def main(custom_symbol: str = None):
 
         # round to two digit
         metrics_df = metrics_df.round(2)
+        
         # ======================================================
         # ===== FORECAST 5 YEARS FOR ALL REQUIRED METRICS ======
         # ======================================================

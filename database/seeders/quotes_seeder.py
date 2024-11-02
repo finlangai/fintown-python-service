@@ -18,6 +18,7 @@ def main():
 
     quoteService = StockQuoteService()
     stockQuoteRepo = StockQuoteRepository()
+    # get the list of interval for getting interval string value
     interval_list = IntervalType.__args__
 
     for symbol in STOCK_SYMBOLS:

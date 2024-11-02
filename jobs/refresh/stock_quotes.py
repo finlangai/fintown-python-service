@@ -1,18 +1,18 @@
-from database.seeders import stash_stats_seeder
+from database.seeders import update_quotes_seeder
 from app.services import discord
 
 
 def get_closure():
     """
-    Update the stats on stash collection for all symbol
+    Get the newest quotes for stock symbols
     """
 
     def closure():
         try:
             # regenerate new assessment
-            amount = stash_stats_seeder.main()
+            amount = update_quotes_seeder.main()
 
-            msg = f"Đã cập nhật chỉ số hằng ngày cho **{amount}** mã (｡･∀･)ﾉﾞ"
+            msg = f"Đã cập nhật giá cổ phiếu cho **{amount}** mã ヾ(•ω•`)o"
             discord.send(msg)
         except Exception as e:
             # Catch any type of exception and access its message
