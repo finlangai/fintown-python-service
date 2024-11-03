@@ -99,6 +99,8 @@ def main():
         mongodb.update_one("stash", {"symbol": symbol}, {"stats": stats_dict})
         print_green_bold(f"stats updated for {symbol}")
 
+    # run fluctuation seeder also
+
     # return the count of symbol
     return len(symbol_list)
 

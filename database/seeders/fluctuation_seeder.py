@@ -12,14 +12,14 @@ def main():
     This seeder works base on existing symbols in companies collection
     """
     print_green_bold("=== SEEDING FLUCTUATIONS")
-    symbols = mongodb.query_with_projection(
+    symbols_list = mongodb.query_with_projection(
         CompanyRepository.Meta.collection_name, {}, {"_id": 0, "symbol": 1}
     )
-    symbols = [record["symbol"] for record in symbols]
+    symbols_list = [record["symbol"] for record in symbols_list]
     quoteService = StockQuoteService()
 
     # 52w, 200d, 150d, 24d
-    for symbol in symbols:
+    for symbol in symbols_list:
 
         # Get the current date
         current_date = datetime.now().date()
@@ -54,11 +54,12 @@ def main():
             day_24=round(avg_24d * 1000, 2),
         ).model_dump()
         # update db
-        mongodb.update_one(
-            "companies", {"symbol": symbol}, {"fluctuation": fluctuation}
-        )
+        # mongodb.update_one(
+        #     "companies", {"symbol": symbol}, {"fluctuation": fluctuation}
+        # )
+        mongodb.update_one("stash", {"symbol": symbol}, {"fluctuation": fluctuation})
         print(f"Fluctuation updated for {text_to_red(symbol)}")
-    print_green_bold(f"Update fluctuation for {len(symbols)} companies")
+    print_green_bold(f"Update fluctuation for {len(symbols_list)} companies")
 
 
 if __name__ == "__main__" or __name__ == "tasks":
