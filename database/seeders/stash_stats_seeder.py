@@ -100,6 +100,10 @@ def main():
         print_green_bold(f"stats updated for {symbol}")
 
     # run fluctuation seeder also
+    from database.seeders import deltas_seeder, fluctuation_seeder
+
+    deltas_seeder.main()
+    fluctuation_seeder.main()
 
     # return the count of symbol
     return len(symbol_list)
