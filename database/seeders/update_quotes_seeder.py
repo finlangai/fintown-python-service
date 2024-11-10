@@ -26,6 +26,8 @@ def main():
         CompanyRepository.Meta.collection_name, {}, {"_id": 0, "symbol": 1}
     )
     symbols_list = [record["symbol"] for record in symbols]
+    # MERGE INDEX SYMBOLS
+    symbols_list.extend(INDEX_SYMBOLS)
 
     today = datetime.today().strftime("%Y-%m-%d")
 

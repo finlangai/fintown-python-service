@@ -79,6 +79,7 @@ def main():
         metric_df = pd.concat(
             [financeService.appraise(formular) for formular in formular_list], axis=1
         )
+
         # calculate LTM
         roe_ltm = float(metric_df.head(4)["return_on_equity"].sum() / 4)
         eps_ltm = float(metric_df.head(4)["earnings_per_share"].sum())
@@ -100,10 +101,15 @@ def main():
         print_green_bold(f"stats updated for {symbol}")
 
     # run fluctuation seeder also
-    from database.seeders import deltas_seeder, fluctuation_seeder
+    from database.seeders import (
+        deltas_seeder,
+        fluctuation_seeder,
+        update_vn30_stash_seeder,
+    )
 
     deltas_seeder.main()
     fluctuation_seeder.main()
+    update_vn30_stash_seeder.main()
 
     # return the count of symbol
     return len(symbol_list)
