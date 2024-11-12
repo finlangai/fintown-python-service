@@ -91,7 +91,7 @@ def main():
         "marketcap": int(sum_marketcap),
         "earnings": int(sum_earnings),
         "revenue": int(sum_revenue),
-        "equity": int(sum_equity),
+        # "equity": int(sum_equity),
         "vn30LastClosed": round(VN30_LAST_CLOSED, 2),
         "vn30DeltaValue": round(VN30_DELTA_VALUE, 2),
         "vn30DeltaPercent": round(VN30_DELTA_PERCENT, 2),

@@ -105,11 +105,13 @@ def main():
         deltas_seeder,
         fluctuation_seeder,
         update_vn30_stash_seeder,
+        stash_report_data_seeder,
     )
 
     deltas_seeder.main()
     fluctuation_seeder.main()
     update_vn30_stash_seeder.main()
+    stash_report_data_seeder.main()
 
     # return the count of symbol
     return len(symbol_list)

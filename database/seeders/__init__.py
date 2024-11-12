@@ -25,3 +25,6 @@ from .stash_stats_seeder import *
 from .price_histories_seeder import *
 from .update_quotes_seeder import *
 from .update_vn30_stash_seeder import *
+from .valuation_formulars import *
+from .valuation_formulars_seeder import *
+from .stash_report_data_seeder import *
