@@ -40,7 +40,7 @@ def main():
         )
 
         mongodb.update_one(
-            "stash", {"symbol": symbol}, {"lastest_report": latest_report}
+            "stash", {"symbol": symbol}, {"latest_report": latest_report}
         )
         print_green_bold(f"report data updated for {symbol}")
 

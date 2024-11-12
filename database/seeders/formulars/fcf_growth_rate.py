@@ -9,7 +9,7 @@ from database.seeders.formulars.parameters import (
 # === BASIC
 BASIC = Expression(
     name="Basic",
-    expression=f"( {{{FreeCashFlow.slug}}} - {{{FreeCashFlowPrevious.slug}}} ) / {{{FreeCashFlowPrevious.slug}}} * 100",
+    expression=f"( ( {{{FreeCashFlow.slug}}} - {{{FreeCashFlowPrevious.slug}}} ) / {{{FreeCashFlowPrevious.slug}}} ) * 100",
     parameters=[FreeCashFlow, FreeCashFlowPrevious],
 )
 

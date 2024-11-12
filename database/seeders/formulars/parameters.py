@@ -163,6 +163,26 @@ NetCashFlowFromOperatingActivities = Parameter(
     location=ParamLocation.cash_flow,
 )
 
+ProceedsFromBorrowings = Parameter(
+    field="Proceeds from borrowings",
+    slug="proceeds_from_borrowings",
+    location=ParamLocation.cash_flow,
+)
+
+RepaymentOfBorrowings = Parameter(
+    field="Repayment of borrowings",
+    slug="repayment_of_borrowings",
+    location=ParamLocation.cash_flow,
+)
+
+DividendsPaid = Parameter(
+    field="Dividends paid",
+    slug="dividends_paid",
+    is_allow_negative=False,
+    location=ParamLocation.cash_flow,
+)
+
+
 # ===== RATIO
 OutstandingShare = Parameter(
     field="Outstanding Share (Mil. Shares)",
