@@ -4,6 +4,7 @@ from database.seeders.valuation_formulars import (
     price_to_earnings_valuation,
     price_to_book_valuation,
     discounted_cash_flow,
+    graham_intrinsic_value_formula,
 )
 
 
@@ -11,7 +12,7 @@ def main():
     print_green_bold("=== SEEDING VALUATION FORMULARS")
 
     # valuation_formulars = [price_to_earnings_valuation, price_to_book_valuation]
-    valuation_formulars = [discounted_cash_flow]
+    valuation_formulars = [graham_intrinsic_value_formula]
 
     valuation_formulars = [formular.get() for formular in valuation_formulars]
 
