@@ -6,3 +6,4 @@ from .firebase import *
 from .simplize import *
 from .cafef import *
 from .formular_resolver import *
+from .rongviet import *
