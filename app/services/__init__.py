@@ -8,3 +8,4 @@ from .cafef import *
 from .discord import *
 from .database_resources import *
 from .rongviet import *
+from .comparison import *

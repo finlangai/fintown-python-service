@@ -29,3 +29,4 @@ from .valuation_formulars import *
 from .valuation_formulars_seeder import *
 from .stash_report_data_seeder import *
 from .beta_seeder import *
+from .comparison_seeder import *

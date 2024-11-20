@@ -1,15 +1,22 @@
 from app.utils import print_green_bold, text_to_red
-from app.models import Dividend, DividendRepository
-from config.seeder import STOCK_SYMBOLS
+from app.models import Dividend, DividendRepository, CompanyRepository
 from app.services import fireant as fa
 import inflection
 import pandas as pd
+from core import mongodb
 
 
 def main():
     print_green_bold("=== SEEDING DIVIDENDS")
     dividendRepo = DividendRepository()
-    for symbol in STOCK_SYMBOLS:
+
+    symbols_list = mongodb.query_with_projection(
+        CompanyRepository.Meta.collection_name, {}, {"_id": 0, "symbol": 1}
+    )
+    symbols_list = [record["symbol"] for record in symbols_list]
+
+    for symbol in symbols_list:
+        # for symbol in ["BVH"]:
         print(f"seeding for {text_to_red(symbol)}")
         result = fa.get_dividends(symbol)
         df = pd.json_normalize(result)
@@ -26,7 +33,11 @@ def main():
             dict = row.to_dict()
             dict.update(Dividend.parse_title(dict["title"]))
 
+            # import json
+
+            # print(json.dumps(dict, indent=4))
             dividends.append(Dividend(**dict))
+
         dividendRepo.save_many(dividends)
         print(f"{len(dividends)} events inserted for {text_to_red(symbol)}")
 

@@ -14,7 +14,7 @@ from database.seeders.valuation_formulars import (
 def main():
     print_green_bold("=== SEEDING VALUATION FORMULARS")
 
-    valuation_formulars = [dividend_discount_model, capital_asset_pricing_model]
+    valuation_formulars = [dividend_discount_model]
 
     valuation_formulars = [formular.get() for formular in valuation_formulars]
 
