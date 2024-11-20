@@ -1,7 +1,13 @@
 from app.utils import print_green_bold, model_mapper, json_camel_to_snake, text_to_red
 from app.models import CompanyRepository, DividendRepository, FormularRepository
 from app.services import StockQuoteService
-from app.services import FormularResolver, TrendingEdge, DividendEdge, ReturnsEdge
+from app.services import (
+    FormularResolver,
+    TrendingEdge,
+    DividendEdge,
+    ReturnsEdge,
+    RevenueProfitEdge,
+)
 from app.enums import DividendType
 
 from core import mongodb
@@ -23,6 +29,9 @@ def main():
     required_identifiers = [
         "return_on_equity",
         "return_on_assets",
+        "revenue_growth_rate",
+        "net_profit_growth_rate",
+        "net_profit_margin",
     ]
     formular_dict = FormularRepository().get_dict(required_identifiers)
 
@@ -113,6 +122,31 @@ def main():
         print("ROE_SCORE: ", ROE_SCORE)
 
         print("Điểm khía cạnh: ", RETURNS_SCORE)
+
+        # ========================================
+        # ========= REVENUE PROFIT SCORE =========
+        # ========================================
+        print("=== REVENUE PROFIT")
+        PROFIT_SCORE = RevenueProfitEdge.scrore_profit(
+            formularResolver, formular_dict["net_profit_growth_rate"]
+        )
+        REVENUE_SCORE = RevenueProfitEdge.scrore_revenue(
+            formularResolver, formular_dict["revenue_growth_rate"]
+        )
+
+        NPM_SCORE = RevenueProfitEdge.scrore_npm(
+            formularResolver, formular_dict["net_profit_margin"]
+        )
+
+        REVENUE_PROFIT_SCORE = (
+            PROFIT_SCORE * 0.4 + REVENUE_SCORE * 0.3 + NPM_SCORE * 0.3
+        )
+
+        print("PROFIT_SCORE: ", PROFIT_SCORE)
+        print("REVENUE_SCORE: ", REVENUE_SCORE)
+        print("NPM_SCORE: ", NPM_SCORE)
+
+        print("Điểm khía cạnh: ", REVENUE_PROFIT_SCORE)
 
         # mongodb.update_one("stash", {"symbol": symbol}, {"comparison": delta_dict})
 
