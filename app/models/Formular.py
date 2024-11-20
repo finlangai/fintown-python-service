@@ -45,3 +45,10 @@ class FormularRepository(AbstractRepository[Formular]):
 
     class Meta:
         collection_name = "formular_library"
+
+    def get_dict(self, identifiers: list[str]):
+        formular_dict = self.find_by({"identifier": {"$in": identifiers}})
+        formular_dict = {
+            formular.identifier: formular for formular in list(formular_dict)
+        }
+        return formular_dict

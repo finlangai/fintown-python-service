@@ -66,14 +66,14 @@ class DividendEdge:
             return 2
 
         filtered_df["growth_rate"] = filtered_df["cash"].pct_change()
-        avg_growth = filtered_df["growth_rate"].mean()
+        avg_growth = filtered_df["growth_rate"].mean() * 100
 
         # return 10 if equal to 10% or more
-        if avg_growth >= 0.1:
+        if avg_growth >= 10:
             return 10
 
         # return 8 if growth rate between 5% - 10%
-        if avg_growth >= 0.05:
+        if avg_growth >= 5:
             return 8
 
         # return 6 if growth rate between 0% - 5%

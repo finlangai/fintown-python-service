@@ -1,7 +1,7 @@
 from app.utils import print_green_bold, model_mapper, json_camel_to_snake, text_to_red
 from app.models import CompanyRepository, DividendRepository, FormularRepository
 from app.services import StockQuoteService
-from app.services.comparison import TrendingEdge, DividendEdge
+from app.services import FormularResolver, TrendingEdge, DividendEdge, ReturnsEdge
 from app.enums import DividendType
 
 from core import mongodb
@@ -18,18 +18,13 @@ def main():
 
     quoteService = StockQuoteService()
     dividendRepo = DividendRepository()
+    formularResolver = FormularResolver(period="quarter", dropna=True)
 
     required_identifiers = [
-        "earnings_per_share",
-        "return_of_equity",
-        "return_of_assets",
+        "return_on_equity",
+        "return_on_assets",
     ]
-    required_formulars = (
-        FormularRepository()
-        .get_collection()
-        .find({"identifier": {"$in": required_identifiers}})
-    )
-    print(required_formulars)
+    formular_dict = FormularRepository().get_dict(required_identifiers)
 
     # Get the current date
     current_date = datetime.now().date()
@@ -42,7 +37,11 @@ def main():
 
     # delta in day, delta in week, delta in month, delta in year
 
-    for symbol in ["VNM", "BVH", "VCB", "HPG"]:
+    # for symbol in ["HPG"]:
+    for symbol in ["VNM", "BVH", "VCB", "HPG", "MBB", "GAS"]:
+        # update symbol for resolver
+        formularResolver.update_symbol(symbol)
+
         print(f"====== {text_to_red(symbol)}")
         quotes_df = quoteService.history(
             symbol=symbol, start=today_52w_before, end=today, interval="1D"
@@ -69,7 +68,6 @@ def main():
         print("MA_SCORE: ", MA_SCORE)
         print("PRICE_SCORE: ", PRICE_SCORE)
         print("VOLUME_SCORE: ", VOLUME_SCORE)
-
         print("Điểm khía cạnh: ", TRENDING_SCORE)
 
         # ==================================
@@ -89,9 +87,7 @@ def main():
             .sort_values(by="year", ascending=True)
         )
         ANNUAL_PAYMENT_SCORE = DividendEdge.score_streak(dividend_df)
-
         DIVIDEND_GROWTH_SCORE = DividendEdge.score_dividend_growth(dividend_df)
-
         DIVIDEND_SCORE = ANNUAL_PAYMENT_SCORE * 0.6 + DIVIDEND_GROWTH_SCORE * 0.4
 
         print("ANNUAL_PAYMENT_SCORE: ", ANNUAL_PAYMENT_SCORE)
@@ -102,27 +98,21 @@ def main():
         # ========= RETURNS SCORE =========
         # ==================================
         print("=== RETURNS")
-        # raw_dividends = [
-        #     record.model_dump() for record in dividendRepo.get_by_symbol(symbol)
-        # ]
-        # dividend_df = pd.json_normalize(raw_dividends)
-        # # only keep cash dividend records
-        # dividend_df = dividend_df[dividend_df["type"] == DividendType.CASH]
-        # dividend_df = (
-        #     dividend_df.groupby("year")["cash"]
-        #     .sum()
-        #     .reset_index()
-        #     .sort_values(by="year", ascending=True)
-        # )
-        # ANNUAL_PAYMENT_SCORE = DividendEdge.score_streak(dividend_df)
+        EPS_SCORE = ReturnsEdge.score_eps(formularResolver)
+        ROA_SCORE = ReturnsEdge.score_roa(
+            formularResolver, formular_dict["return_on_assets"]
+        )
+        ROE_SCORE = ReturnsEdge.score_roe(
+            formularResolver, formular_dict["return_on_equity"]
+        )
 
-        # DIVIDEND_GROWTH_SCORE = DividendEdge.score_dividend_growth(dividend_df)
+        RETURNS_SCORE = EPS_SCORE * 0.4 + ROA_SCORE * 0.3 + ROE_SCORE * 0.3
 
-        # DIVIDEND_SCORE = ANNUAL_PAYMENT_SCORE * 0.6 + DIVIDEND_GROWTH_SCORE * 0.4
+        print("EPS_SCORE: ", EPS_SCORE)
+        print("ROA_SCORE: ", ROA_SCORE)
+        print("ROE_SCORE: ", ROE_SCORE)
 
-        # print("ANNUAL_PAYMENT_SCORE: ", ANNUAL_PAYMENT_SCORE)
-        # print("DIVIDEND_GROWTH_SCORE: ", DIVIDEND_GROWTH_SCORE)
-        # print("Điểm khía cạnh: ", DIVIDEND_SCORE)
+        print("Điểm khía cạnh: ", RETURNS_SCORE)
 
         # mongodb.update_one("stash", {"symbol": symbol}, {"comparison": delta_dict})
 
