@@ -1,4 +1,10 @@
-from app.utils import print_green_bold, model_mapper, json_camel_to_snake, text_to_red
+from app.utils import (
+    print_green_bold,
+    model_mapper,
+    json_camel_to_snake,
+    text_to_red,
+    text_to_blue,
+)
 from app.models import CompanyRepository, DividendRepository, FormularRepository
 from app.services import StockQuoteService
 from app.services import (
@@ -79,7 +85,7 @@ def main():
         print("MA_SCORE: ", MA_SCORE)
         print("PRICE_SCORE: ", PRICE_SCORE)
         print("VOLUME_SCORE: ", VOLUME_SCORE)
-        print("Điểm khía cạnh: ", TRENDING_SCORE)
+        print("= TRENDING_SCORE: ", TRENDING_SCORE)
 
         # ==================================
         # ========= DIVIDEND SCORE =========
@@ -103,7 +109,7 @@ def main():
 
         print("ANNUAL_PAYMENT_SCORE: ", ANNUAL_PAYMENT_SCORE)
         print("DIVIDEND_GROWTH_SCORE: ", DIVIDEND_GROWTH_SCORE)
-        print("Điểm khía cạnh: ", DIVIDEND_SCORE)
+        print("= DIVIDEND_SCORE: ", DIVIDEND_SCORE)
 
         # ==================================
         # ========= RETURNS SCORE =========
@@ -123,7 +129,7 @@ def main():
         print("ROA_SCORE: ", ROA_SCORE)
         print("ROE_SCORE: ", ROE_SCORE)
 
-        print("Điểm khía cạnh: ", RETURNS_SCORE)
+        print("= RETURNS_SCORE: ", RETURNS_SCORE)
 
         # ========================================
         # ========= REVENUE PROFIT SCORE =========
@@ -148,7 +154,7 @@ def main():
         print("REVENUE_SCORE: ", REVENUE_SCORE)
         print("NPM_SCORE: ", NPM_SCORE)
 
-        print("Điểm khía cạnh: ", REVENUE_PROFIT_SCORE)
+        print("= REVENUE_PROFIT_SCORE: ", REVENUE_PROFIT_SCORE)
 
         # ========================================
         # ========= REVENUE PROFIT SCORE =========
@@ -172,9 +178,29 @@ def main():
         print("MOMENTUM_90D_SCORE: ", MOMENTUM_90D_SCORE)
         print("MOMENTUM_1Y_SCORE: ", MOMENTUM_1Y_SCORE)
 
-        print("Điểm khía cạnh: ", MOMENTUM_SCORE)
+        print("= MOMENTUM_SCORE: ", MOMENTUM_SCORE)
 
-        # mongodb.update_one("stash", {"symbol": symbol}, {"comparison": delta_dict})
+        # === CALCULATING FINAL DATA
+        Q_RATING = (
+            TRENDING_SCORE
+            + DIVIDEND_SCORE
+            + RETURNS_SCORE
+            + REVENUE_PROFIT_SCORE
+            + MOMENTUM_SCORE
+        ) / 5
+
+        # update into stash
+        comparison_data = {
+            "rating": Q_RATING,
+            "trending": TRENDING_SCORE,
+            "dividend": DIVIDEND_SCORE,
+            "returns": RETURNS_SCORE,
+            "revenueProfit": REVENUE_PROFIT_SCORE,
+            "momentum": MOMENTUM_SCORE,
+        }
+
+        mongodb.update_one("stash", {"symbol": symbol}, {"comparison": comparison_data})
+        print(text_to_blue(f"Comparison data for {text_to_red(symbol)} updated"))
 
 
 if __name__ == "__main__" or __name__ == "tasks":
