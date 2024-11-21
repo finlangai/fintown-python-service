@@ -7,6 +7,7 @@ from app.services import (
     DividendEdge,
     ReturnsEdge,
     RevenueProfitEdge,
+    MomentumEdge,
 )
 from app.enums import DividendType
 
@@ -47,7 +48,8 @@ def main():
     # delta in day, delta in week, delta in month, delta in year
 
     # for symbol in ["HPG"]:
-    for symbol in ["VNM", "BVH", "VCB", "HPG", "MBB", "GAS"]:
+    # for symbol in ["VNM", "BVH", "VCB", "HPG", "MBB", "GAS"]:
+    for symbol in symbol_list:
         # update symbol for resolver
         formularResolver.update_symbol(symbol)
 
@@ -147,6 +149,30 @@ def main():
         print("NPM_SCORE: ", NPM_SCORE)
 
         print("Điểm khía cạnh: ", REVENUE_PROFIT_SCORE)
+
+        # ========================================
+        # ========= REVENUE PROFIT SCORE =========
+        # ========================================
+        print("=== MOMENTUM")
+
+        MOMENTUM_7D_SCORE = MomentumEdge.score_7d(quotes_df)
+        MOMENTUM_30D_SCORE = MomentumEdge.score_30d(quotes_df)
+        MOMENTUM_90D_SCORE = MomentumEdge.score_90d(quotes_df)
+        MOMENTUM_1Y_SCORE = MomentumEdge.score_1Y(quotes_df)
+
+        MOMENTUM_SCORE = (
+            MOMENTUM_7D_SCORE * 0.2
+            + MOMENTUM_30D_SCORE * 0.25
+            + MOMENTUM_90D_SCORE * 0.25
+            + MOMENTUM_1Y_SCORE * 0.1
+        )
+
+        print("MOMENTUM_7D_SCORE: ", MOMENTUM_7D_SCORE)
+        print("MOMENTUM_30D_SCORE: ", MOMENTUM_30D_SCORE)
+        print("MOMENTUM_90D_SCORE: ", MOMENTUM_90D_SCORE)
+        print("MOMENTUM_1Y_SCORE: ", MOMENTUM_1Y_SCORE)
+
+        print("Điểm khía cạnh: ", MOMENTUM_SCORE)
 
         # mongodb.update_one("stash", {"symbol": symbol}, {"comparison": delta_dict})
 
