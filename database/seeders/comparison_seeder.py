@@ -199,7 +199,20 @@ def main():
             "momentum": MOMENTUM_SCORE,
         }
 
-        mongodb.update_one("stash", {"symbol": symbol}, {"comparison": comparison_data})
+        # GET LASTEST YEAR AND QUARTER
+        latest_meta_row = formularResolver.get_meta_df().iloc[0]
+        latest_year = int(latest_meta_row["yearReport"])
+        latest_quarter = int(latest_meta_row["lengthReport"])
+
+        mongodb.update_one(
+            "stash",
+            {"symbol": symbol},
+            {
+                "comparison": comparison_data,
+                "latest_year": latest_year,
+                "latest_quarter": latest_quarter,
+            },
+        )
         print(text_to_blue(f"Comparison data for {text_to_red(symbol)} updated"))
 
 
