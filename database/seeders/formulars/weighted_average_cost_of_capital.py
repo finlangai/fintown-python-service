@@ -16,33 +16,26 @@ from database.seeders.formulars.parameters import (
 # Market ket value of equity
 E = f"{{{MarketCap.slug}}}"
 # Market value of Debt, or Total Debt
-D = f"( {{{ShortTermBorrowings.slug}}} + {{{LongTermBorrowings.slug}}} )"
+# D = f"( {{{ShortTermBorrowings.slug}}} + {{{LongTermBorrowings.slug}}} )"
+D = "( {market_value_of_debt} )"
 # V = E + D
 V = f"( {E} + {D} )"
 # Cost of Debt
 Rd = f"( {{{InterestExpenses.slug}}} / {D} )"
 # Corporate tax
-Tc = f"( {{{TaxForTheYear.slug}}} / {{{ProfitBeforeTax.slug}}} * 100 )"
-# Cost of equity, using Earnings Capitalization Ratio or Earnings Yield for alternative
-Re = f"( {{{EarningsPerShareLTM.slug}}} / {{{ClosedPrice.slug}}} )"
+Tc = f"( {{{TaxForTheYear.slug}}} / {{{ProfitBeforeTax.slug}}} )"
+# = ABANDONED
+# Cost of equity, using CAPM
+Re = "( {cost_of_equity} )"
 
-basic_first_part = f"( {E} / ( {E} + {D} ) ) +  {Re}"
-basic_second_part = f"( {D} / ( {E} + {D} ) ) * {Rd}"
-basic_third_part = f"( 1 - {Tc} )"
+
+basic_first_part = f"( ( {E} / {V} ) *  {Re} )"
+basic_second_part = f"( ( {D} / {V} ) * {Rd} * ( 1 - {Tc} ) )"
 
 BASIC = Expression(
     name="Basic",
-    expression=f"{basic_first_part} + {basic_second_part} * {basic_third_part}",
-    parameters=[
-        MarketCap,
-        ShortTermBorrowings,
-        LongTermBorrowings,
-        InterestExpenses,
-        TaxForTheYear,
-        ProfitBeforeTax,
-        EarningsPerShareLTM,
-        ClosedPrice,
-    ],
+    expression=f"{basic_first_part} + {basic_second_part}",
+    parameters=[],
 )
 
 
@@ -52,6 +45,8 @@ def get(order: int):
         order=order,
         is_percentage=False,
         unit=None,
+        is_viewable=False,
+        is_enable=False,
     )
     return Formular(
         id=order,

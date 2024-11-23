@@ -17,6 +17,7 @@ class FormularMeta(BaseModel):
     is_percentage: bool = False
     is_should_divine_by_billion: bool = False
     is_viewable: bool = True
+    is_enable: bool = True
     unit: Optional[str] = None
 
 

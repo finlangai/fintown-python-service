@@ -71,6 +71,7 @@ def main():
         fcf_growth_rate,
         roa_growth_rate,
         book_value_per_share,
+        weighted_average_cost_of_capital,
     ]
     formulars = [
         formular_module.get(index + 1)

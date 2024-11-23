@@ -20,7 +20,10 @@ def main():
     # get the list of formulars
     metric_formulars = list(
         FormularRepository().find_by(
-            query={"metadata.category": FormulaType.FINANCIAL_METRIC}
+            query={
+                "metadata.category": FormulaType.FINANCIAL_METRIC,
+                "metadata.is_enable": True,
+            }
         )
     )
 
