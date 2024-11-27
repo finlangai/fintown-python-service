@@ -12,6 +12,7 @@ from app.enums import ParamLocation
 from core import mongodb
 import numpy as np, pandas as pd, json
 from datetime import timedelta
+from .formulars.parameters import ShortTermBorrowings, LongTermBorrowings
 
 
 def main():
@@ -37,6 +38,12 @@ def main():
         latest_report["liabilities"] = int(balance_first_row["LIABILITIES (Bn. VND)"])
         latest_report["cash_and_cash_equivalents"] = int(
             balance_first_row["Cash and cash equivalents (Bn. VND)"]
+        )
+        latest_report["short_term_borrowings"] = int(
+            financeService.get_column(LongTermBorrowings).iloc[0]
+        )
+        latest_report["long_term_borrowings"] = int(
+            financeService.get_column(ShortTermBorrowings).iloc[0]
         )
 
         mongodb.update_one(

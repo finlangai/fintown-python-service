@@ -148,7 +148,7 @@ def main():
             wacc = eval(wacc_expression)
             print(f"wacc của {text_to_red(symbol)}: ", wacc)
 
-            mongodb.update_one("stash", {"symbol": symbol}, {"stats.wacc": wacc})
+            mongodb.update_one("stash", {"symbol": symbol}, {"wacc": wacc})
             print_green_bold(f"WACC updated for {symbol}")
 
         except:
