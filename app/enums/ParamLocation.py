@@ -16,3 +16,4 @@ class ParamLocation(int, Enum):
     metrics = 5
     average = 6
     previous = 7
+    delta = 8

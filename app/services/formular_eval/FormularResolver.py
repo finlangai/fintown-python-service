@@ -10,6 +10,7 @@ class FormularResolver(ResolverToolkit):
         for formular in metric.library:
             # Chech if having enough parameters to calculate with the current formular
             is_sufficient = self.check_sufficiency(parameters=formular.parameters)
+
             if not is_sufficient:
                 continue
 
@@ -100,11 +101,21 @@ class FormularResolver(ResolverToolkit):
             GrossProfit,
             TotalAsset,
             OwnerEquity,
+            CurrentAsset,
+            CurrentLiabilities,
         )
 
         previous_df = pd.DataFrame()
 
-        columns = [Revenue, NetProfit, GrossProfit, TotalAsset, OwnerEquity]
+        columns = [
+            Revenue,
+            NetProfit,
+            GrossProfit,
+            TotalAsset,
+            OwnerEquity,
+            CurrentAsset,
+            CurrentLiabilities,
+        ]
 
         for param in columns:
             location_df = self.get_data(param.location)
@@ -123,3 +134,37 @@ class FormularResolver(ResolverToolkit):
 
         # return the Dataframe while shifting up by one row, which make each row the previous period
         return previous_df.shift(-1)
+
+    def delta(self):
+        from database.seeders.formulars.parameters import (
+            CurrentAsset,
+            CurrentLiabilities,
+            OwnerEquity,
+        )
+
+        delta_df = pd.DataFrame()
+
+        # === calculate Working Capital Delta
+        try:
+
+            current_assets_series = self.get_column(CurrentAsset)
+            current_liabilities_series = self.get_column(CurrentLiabilities)
+            working_capital = current_assets_series - current_liabilities_series
+            working_capital_delta = working_capital - working_capital.shift(-1)
+            working_capital_delta.name = "Working Capital Delta"
+
+            delta_df = pd.concat([delta_df, working_capital_delta.to_frame()], axis=1)
+        except:
+            pass
+
+        # === calculate Owner Equity Delta
+        try:
+            owner_equity = self.get_column(OwnerEquity)
+            owner_equity_delta = owner_equity - owner_equity.shift(-1)
+            owner_equity_delta.name = "Owner Equity Delta"
+
+            delta_df = pd.concat([delta_df, owner_equity_delta.to_frame()], axis=1)
+        except:
+            pass
+
+        return delta_df

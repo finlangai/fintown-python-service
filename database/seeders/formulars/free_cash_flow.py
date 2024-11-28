@@ -7,39 +7,44 @@ from database.seeders.formulars.parameters import (
     PurchaseOfFixedAssets,
     ProceedsFromBorrowings,
     RepaymentOfBorrowings,
-    NetCashFlowFromOperatingActivities,
-    DividendsPaid,
+    WorkingCapitalDelta,
+    OwnerEquity,
+    OwnerEquityPrevious,
+    ProceedsFromDisposalOfFixedAssets,
+    NetGainLossFromForeignCurrencyAndGoldDealings,
+    NetGainLossFromDisposalOfInvestmentSecurities,
+    NetOtherIncomeExpenses,
+    OwnerEquityDelta,
 )
 
 # === BASIC
-# BASIC = Expression(
-#     name="Basic",
-#     expression=f"{{{NetCashFlowFromOperatingActivities.slug}}} - {{{PurchaseOfFixedAssets.slug}}}",
-#     parameters=[NetCashFlowFromOperatingActivities, PurchaseOfFixedAssets],
-# )
-
-NetBorrowing = (
-    f"( {{{ProceedsFromBorrowings.slug}}} - {{{RepaymentOfBorrowings.slug}}} )"
-)
 BASIC = Expression(
     name="Basic",
-    expression=f"{{{NetProfit.slug}}} + {{{DepreciationAndAmortisation.slug}}} - {{{PurchaseOfFixedAssets.slug}}} + {NetBorrowing}",
+    expression=f"{{{NetProfit.slug}}} - {{{PurchaseOfFixedAssets.slug}}} + {{{DepreciationAndAmortisation.slug}}} - {{{WorkingCapitalDelta.slug}}} + ( {{{ProceedsFromBorrowings.slug}}} - {{{RepaymentOfBorrowings.slug}}} )",
     parameters=[
         NetProfit,
-        DepreciationAndAmortisation,
         PurchaseOfFixedAssets,
+        DepreciationAndAmortisation,
+        WorkingCapitalDelta,
         ProceedsFromBorrowings,
         RepaymentOfBorrowings,
     ],
 )
 
+# === FOR BANK
+GrowthOfCapital = f"{{{OwnerEquityDelta.slug}}}"
+OtherIncome = f"( {{{ProceedsFromDisposalOfFixedAssets.slug}}} + {{{NetGainLossFromForeignCurrencyAndGoldDealings.slug}}} + {{{NetGainLossFromDisposalOfInvestmentSecurities.slug}}} + {{{NetOtherIncomeExpenses.slug}}} )"
+
 FOR_BANK = Expression(
     name="FOR_BANK",
-    expression=f"{{{NetCashFlowFromOperatingActivities.slug}}} - {{{PurchaseOfFixedAssets.slug}}} - {{{DividendsPaid.slug}}}",
+    expression=f"{{{NetProfit.slug}}} - {GrowthOfCapital} + {OtherIncome}",
     parameters=[
-        NetCashFlowFromOperatingActivities,
-        PurchaseOfFixedAssets,
-        DividendsPaid,
+        NetProfit,
+        OwnerEquityDelta,
+        ProceedsFromDisposalOfFixedAssets,
+        NetGainLossFromForeignCurrencyAndGoldDealings,
+        NetGainLossFromDisposalOfInvestmentSecurities,
+        NetOtherIncomeExpenses,
     ],
 )
 

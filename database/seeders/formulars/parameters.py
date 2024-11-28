@@ -144,6 +144,27 @@ TaxForTheYear = Parameter(
     is_allow_negative=False,
 )
 
+
+# Tiền thu được từ hoạt động mua bán ngoại hối và vàng
+NetGainLossFromForeignCurrencyAndGoldDealings = Parameter(
+    field="Net gain (loss) from foreign currency and gold dealings",
+    slug="net_gain_loss_from_foreign_currency_and_gold_dealings",
+    location=ParamLocation.income_statement,
+)
+# Tiền thu được từ hoạt động đầu tư
+NetGainLossFromDisposalOfInvestmentSecurities = Parameter(
+    field="Net gain (loss) from disposal of investment securities",
+    slug="net_gain_loss_from_disposal_of_investment_securities",
+    location=ParamLocation.income_statement,
+)
+# Lãi lỗ thuần từ hoạt động khác
+NetOtherIncomeExpenses = Parameter(
+    field="Net Other income/expenses",
+    slug="net_other_income_expenses",
+    location=ParamLocation.income_statement,
+)
+
+
 # ===== CASHFLOW STATEMENT
 DepreciationAndAmortisation = Parameter(
     field="Depreciation and Amortisation",
@@ -173,12 +194,20 @@ RepaymentOfBorrowings = Parameter(
     field="Repayment of borrowings",
     slug="repayment_of_borrowings",
     location=ParamLocation.cash_flow,
+    is_allow_negative=False,
 )
 
 DividendsPaid = Parameter(
     field="Dividends paid",
     slug="dividends_paid",
     is_allow_negative=False,
+    location=ParamLocation.cash_flow,
+)
+
+# Tiền thu từ thanh lý hoặc nhượng bán tài sản cố định
+ProceedsFromDisposalOfFixedAssets = Parameter(
+    field="Proceeds from disposal of fixed assets",
+    slug="proceeds_from_disposal_of_fixed_assets",
     location=ParamLocation.cash_flow,
 )
 
@@ -223,6 +252,7 @@ ReturnOnAssets = Parameter(
     location=ParamLocation.metrics,
 )
 
+
 # ===== Average
 AverageInventory = Parameter(
     field="Average Inventories",
@@ -255,6 +285,18 @@ TotalAssetPrevious = Parameter(
     location=ParamLocation.previous,
 )
 
+CurrentAssetPrevious = Parameter(
+    field="CURRENT ASSETS (Bn. VND) Previous",
+    slug="current_assets_bn_vnd_previous",
+    location=ParamLocation.balance_sheet,
+)
+
+CurrentLiabilitiesPrevious = Parameter(
+    field="Current liabilities (Bn. VND) Previous",
+    slug="current_liabilities_bn_vnd_previous",
+    location=ParamLocation.balance_sheet,
+)
+
 OwnerEquityPrevious = Parameter(
     field="OWNER'S EQUITY(Bn.VND) Previous",
     slug="owner_s_equity_bn_vnd_previous",
@@ -280,4 +322,18 @@ ReturnOnAssetsPrevious = Parameter(
     field="Return on Assets Previous",
     slug="return_on_assets_previous",
     location=ParamLocation.previous,
+)
+
+# === DELTA
+# Thay đổi vốn lưu động
+WorkingCapitalDelta = Parameter(
+    field="Working Capital Delta",
+    slug="working_capital_delta",
+    location=ParamLocation.delta,
+)
+# Thay đổi vốn chủ sỡ hữu
+OwnerEquityDelta = Parameter(
+    field="Owner Equity Delta",
+    slug="owner_equity_delta",
+    location=ParamLocation.delta,
 )

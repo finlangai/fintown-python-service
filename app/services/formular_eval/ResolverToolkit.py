@@ -57,6 +57,7 @@ class ResolverToolkit(BaseResolver):
         """
         check if the symbol has sufficient parameters to calculate from a formular
         """
+
         is_sufficient = all(
             param.field in self.get_data(param.location) for param in parameters
         )
