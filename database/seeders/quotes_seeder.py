@@ -21,7 +21,7 @@ def main():
     # get the list of interval for getting interval string value
     interval_list = IntervalType.__args__
 
-    for symbol in STOCK_SYMBOLS:
+    for symbol in STOCK_SYMBOLS + INDEX_SYMBOLS:
         print(f"=== seeding quotes for {text_to_red(symbol)}")
         stock_quotes: list[StockQuote] = []
 

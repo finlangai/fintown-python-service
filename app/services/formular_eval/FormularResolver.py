@@ -147,9 +147,9 @@ class FormularResolver(ResolverToolkit):
         # === calculate Working Capital Delta
         try:
 
-            current_assets_series = self.get_column(CurrentAsset)
-            current_liabilities_series = self.get_column(CurrentLiabilities)
-            working_capital = current_assets_series - current_liabilities_series
+            current_assets = self.get_column(CurrentAsset)
+            current_liabilities = self.get_column(CurrentLiabilities)
+            working_capital = current_assets - current_liabilities
             working_capital_delta = working_capital - working_capital.shift(-1)
             working_capital_delta.name = "Working Capital Delta"
 
